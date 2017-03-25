@@ -1,0 +1,15 @@
+c:\users\flame\documents\visual studio 2015\Projects\Puzzle07Editor\Puzzle07Editor\bin\Debug\Puzzle07Editor.exe.config
+c:\users\flame\documents\visual studio 2015\Projects\Puzzle07Editor\Puzzle07Editor\bin\Debug\Puzzle07Editor.exe
+c:\users\flame\documents\visual studio 2015\Projects\Puzzle07Editor\Puzzle07Editor\bin\Debug\Puzzle07Editor.pdb
+c:\users\flame\documents\visual studio 2015\Projects\Puzzle07Editor\Puzzle07Editor\obj\Debug\Puzzle07Editor.csprojResolveAssemblyReference.cache
+c:\users\flame\documents\visual studio 2015\Projects\Puzzle07Editor\Puzzle07Editor\obj\Debug\Puzzle07Editor.Pz_Main.resources
+c:\users\flame\documents\visual studio 2015\Projects\Puzzle07Editor\Puzzle07Editor\obj\Debug\Puzzle07Editor.Properties.Resources.resources
+c:\users\flame\documents\visual studio 2015\Projects\Puzzle07Editor\Puzzle07Editor\obj\Debug\Puzzle07Editor.csproj.GenerateResource.Cache
+c:\users\flame\documents\visual studio 2015\Projects\Puzzle07Editor\Puzzle07Editor\obj\Debug\Puzzle07Editor.exe
+c:\users\flame\documents\visual studio 2015\Projects\Puzzle07Editor\Puzzle07Editor\obj\Debug\Puzzle07Editor.pdb
+C:\Users\flame\Documents\Visual Studio 2015\Projects\Puzzle07Editor\Puzzle07Editor\obj\Debug\Puzzle07Editor.Form2.resources
+C:\Users\flame\Documents\Visual Studio 2015\Projects\Puzzle07Editor\Puzzle07Editor\obj\Debug\Puzzle07Editor.Form3.resources
+C:\Users\flame\Documents\Visual Studio 2015\Projects\Puzzle07Editor\Puzzle07Editor\obj\Debug\Puzzle07Editor.Form4.resources
+C:\Users\flame\Documents\Visual Studio 2015\Projects\Puzzle07Editor\Puzzle07Editor\obj\Debug\Puzzle07Editor.Form5.resources
+C:\Users\flame\Documents\Visual Studio 2015\Projects\Puzzle07Editor\Puzzle07Editor\obj\Debug\Puzzle07Editor.Form6.resources
+C:\Users\flame\Documents\Visual Studio 2015\Projects\Puzzle07Editor\Puzzle07Editor\obj\Debug\Puzzle07Editor.Form7.resources
