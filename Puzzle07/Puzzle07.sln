@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
 VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Puzzle07", "HW2_Stone_Austin\Puzzle07.csproj", "{FE667B64-7FA7-4B58-A564-2937CF8274DD}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Puzzle07", "..\Puzzle07\Puzzle07\Puzzle07.csproj", "{FE667B64-7FA7-4B58-A564-2937CF8274DD}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
