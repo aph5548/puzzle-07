@@ -54,3 +54,33 @@ C:\Users\kaliboss\Documents\Visual Studio 2015\Projects\Puzzle07\Puzzle07\bin\Wi
 C:\Users\kaliboss\Documents\Visual Studio 2015\Projects\Puzzle07\Puzzle07\bin\Windows\x86\Debug\SharpDX.RawInput.xml
 C:\Users\kaliboss\Documents\Visual Studio 2015\Projects\Puzzle07\Puzzle07\bin\Windows\x86\Debug\SharpDX.Direct3D9.xml
 C:\Users\kaliboss\Documents\Visual Studio 2015\Projects\Puzzle07\Puzzle07\obj\x86\Debug\Puzzle07.csprojResolveAssemblyReference.cache
+C:\Users\Derek\Documents\School\Puzzle07\Puzzle07\Puzzle07\obj\x86\Debug\Puzzle07.exe
+C:\Users\Derek\Documents\School\Puzzle07\Puzzle07\Puzzle07\obj\x86\Debug\Puzzle07.pdb
+C:\Users\Derek\Documents\School\Puzzle07\Puzzle07\Puzzle07\bin\Windows\x86\Debug\Content\buttonTexture.png
+C:\Users\Derek\Documents\School\Puzzle07\Puzzle07\Puzzle07\bin\Windows\x86\Debug\Content\enemySprite.png
+C:\Users\Derek\Documents\School\Puzzle07\Puzzle07\Puzzle07\bin\Windows\x86\Debug\Content\menuTitle.png
+C:\Users\Derek\Documents\School\Puzzle07\Puzzle07\Puzzle07\bin\Windows\x86\Debug\Content\characterSprite.xnb
+C:\Users\Derek\Documents\School\Puzzle07\Puzzle07\Puzzle07\bin\Windows\x86\Debug\Content\mainFont.xnb
+C:\Users\Derek\Documents\School\Puzzle07\Puzzle07\Puzzle07\bin\Windows\x86\Debug\Puzzle07.exe
+C:\Users\Derek\Documents\School\Puzzle07\Puzzle07\Puzzle07\bin\Windows\x86\Debug\Puzzle07.pdb
+C:\Users\Derek\Documents\School\Puzzle07\Puzzle07\Puzzle07\bin\Windows\x86\Debug\MonoGame.Framework.dll
+C:\Users\Derek\Documents\School\Puzzle07\Puzzle07\Puzzle07\bin\Windows\x86\Debug\SharpDX.MediaFoundation.dll
+C:\Users\Derek\Documents\School\Puzzle07\Puzzle07\Puzzle07\bin\Windows\x86\Debug\SharpDX.dll
+C:\Users\Derek\Documents\School\Puzzle07\Puzzle07\Puzzle07\bin\Windows\x86\Debug\SharpDX.XAudio2.dll
+C:\Users\Derek\Documents\School\Puzzle07\Puzzle07\Puzzle07\bin\Windows\x86\Debug\SharpDX.DXGI.dll
+C:\Users\Derek\Documents\School\Puzzle07\Puzzle07\Puzzle07\bin\Windows\x86\Debug\SharpDX.Direct3D11.dll
+C:\Users\Derek\Documents\School\Puzzle07\Puzzle07\Puzzle07\bin\Windows\x86\Debug\SharpDX.Direct2D1.dll
+C:\Users\Derek\Documents\School\Puzzle07\Puzzle07\Puzzle07\bin\Windows\x86\Debug\SharpDX.XInput.dll
+C:\Users\Derek\Documents\School\Puzzle07\Puzzle07\Puzzle07\bin\Windows\x86\Debug\SharpDX.RawInput.dll
+C:\Users\Derek\Documents\School\Puzzle07\Puzzle07\Puzzle07\bin\Windows\x86\Debug\SharpDX.Direct3D9.dll
+C:\Users\Derek\Documents\School\Puzzle07\Puzzle07\Puzzle07\bin\Windows\x86\Debug\MonoGame.Framework.xml
+C:\Users\Derek\Documents\School\Puzzle07\Puzzle07\Puzzle07\bin\Windows\x86\Debug\SharpDX.MediaFoundation.xml
+C:\Users\Derek\Documents\School\Puzzle07\Puzzle07\Puzzle07\bin\Windows\x86\Debug\SharpDX.xml
+C:\Users\Derek\Documents\School\Puzzle07\Puzzle07\Puzzle07\bin\Windows\x86\Debug\SharpDX.XAudio2.xml
+C:\Users\Derek\Documents\School\Puzzle07\Puzzle07\Puzzle07\bin\Windows\x86\Debug\SharpDX.DXGI.xml
+C:\Users\Derek\Documents\School\Puzzle07\Puzzle07\Puzzle07\bin\Windows\x86\Debug\SharpDX.Direct3D11.xml
+C:\Users\Derek\Documents\School\Puzzle07\Puzzle07\Puzzle07\bin\Windows\x86\Debug\SharpDX.Direct2D1.xml
+C:\Users\Derek\Documents\School\Puzzle07\Puzzle07\Puzzle07\bin\Windows\x86\Debug\SharpDX.XInput.xml
+C:\Users\Derek\Documents\School\Puzzle07\Puzzle07\Puzzle07\bin\Windows\x86\Debug\SharpDX.RawInput.xml
+C:\Users\Derek\Documents\School\Puzzle07\Puzzle07\Puzzle07\bin\Windows\x86\Debug\SharpDX.Direct3D9.xml
+C:\Users\Derek\Documents\School\Puzzle07\Puzzle07\Puzzle07\obj\x86\Debug\Puzzle07.csprojResolveAssemblyReference.cache
