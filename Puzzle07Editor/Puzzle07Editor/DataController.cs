@@ -101,7 +101,7 @@ namespace Puzzle07Editor
 
                         for(int j = 0; j < waterInts.Length; j++)
                         {
-                            writer.Write(waterInts[j]);
+                            writer.Write(waterInts[j] + " ");
                         }
 
                         writer.WriteLine(" ");
@@ -116,7 +116,7 @@ namespace Puzzle07Editor
                         writer.WriteLine(rooms[i]);
                         for(int j = 0; j < sequence.Length; j++)
                         {
-                            writer.Write(sequence[j]);
+                            writer.Write(sequence[j] + " ");
                         }
                         writer.WriteLine(" ");
                     }
