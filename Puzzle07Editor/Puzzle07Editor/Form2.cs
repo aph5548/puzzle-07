@@ -73,7 +73,8 @@ namespace Puzzle07Editor
             }
             else
             {
-                lb_Room.Text = "Choose Room " + DataController.GetSingleton().RoomID;
+                int roomNumber = DataController.GetSingleton().RoomID + 1;
+                lb_Room.Text = "Choose Room " + roomNumber;
             }
 
             bT_Stealth.Enabled = false;
@@ -94,7 +95,8 @@ namespace Puzzle07Editor
             }
             else
             {
-                lb_Room.Text = "Choose Room " + DataController.GetSingleton().RoomID;
+                int roomNumber = DataController.GetSingleton().RoomID + 1;
+                lb_Room.Text = "Choose Room " + roomNumber;
             }
 
             bT_Lever.Enabled = false;
@@ -115,7 +117,8 @@ namespace Puzzle07Editor
             }
             else
             {
-                lb_Room.Text = "Choose Room " + DataController.GetSingleton().RoomID;
+                int roomNumber = DataController.GetSingleton().RoomID + 1;
+                lb_Room.Text = "Choose Room " + roomNumber;
             }
 
             bT_Sequence.Enabled = false;
@@ -136,7 +139,8 @@ namespace Puzzle07Editor
             }
             else
             {
-                lb_Room.Text = "Choose Room " + DataController.GetSingleton().RoomID;
+                int roomNumber = DataController.GetSingleton().RoomID + 1;
+                lb_Room.Text = "Choose Room " + roomNumber;
             }
 
             bT_Light.Enabled = false;
@@ -148,6 +152,11 @@ namespace Puzzle07Editor
             FormController.GetSingleton().changeRooms();
             this.Enabled = false;
             this.Visible = false;
+        }
+
+        private void Form2_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            Application.Exit();
         }
     }
 }

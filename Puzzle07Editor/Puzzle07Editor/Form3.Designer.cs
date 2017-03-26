@@ -30,13 +30,13 @@
         {
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
-            this.textBox1 = new System.Windows.Forms.TextBox();
-            this.textBox2 = new System.Windows.Forms.TextBox();
-            this.textBox3 = new System.Windows.Forms.TextBox();
+            this.tB_Int3 = new System.Windows.Forms.TextBox();
+            this.tB_Int1 = new System.Windows.Forms.TextBox();
+            this.tB_Int2 = new System.Windows.Forms.TextBox();
             this.label3 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
-            this.label6 = new System.Windows.Forms.Label();
+            this.lb_Error = new System.Windows.Forms.Label();
             this.bT_Validate = new System.Windows.Forms.Button();
             this.bT_Next = new System.Windows.Forms.Button();
             this.SuspendLayout();
@@ -59,29 +59,32 @@
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(377, 115);
             this.label2.TabIndex = 1;
-            this.label2.Text = "Enter 3 integers between 1-12:\r\n\r\nInteger 1 should be greater than Integer 2\r\n\r\nI" +
+            this.label2.Text = "Enter 3 integers between 1-10:\r\n\r\nInteger 1 should be greater than Integer 2\r\n\r\nI" +
     "nteger 3 should be smaller than Integer 1\r\n";
             // 
-            // textBox1
+            // tB_Int3
             // 
-            this.textBox1.Location = new System.Drawing.Point(187, 373);
-            this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(40, 22);
-            this.textBox1.TabIndex = 2;
+            this.tB_Int3.Location = new System.Drawing.Point(187, 373);
+            this.tB_Int3.Name = "tB_Int3";
+            this.tB_Int3.Size = new System.Drawing.Size(40, 22);
+            this.tB_Int3.TabIndex = 4;
+            this.tB_Int3.TextChanged += new System.EventHandler(this.tB_Int3_TextChanged);
             // 
-            // textBox2
+            // tB_Int1
             // 
-            this.textBox2.Location = new System.Drawing.Point(187, 273);
-            this.textBox2.Name = "textBox2";
-            this.textBox2.Size = new System.Drawing.Size(40, 22);
-            this.textBox2.TabIndex = 3;
+            this.tB_Int1.Location = new System.Drawing.Point(187, 273);
+            this.tB_Int1.Name = "tB_Int1";
+            this.tB_Int1.Size = new System.Drawing.Size(40, 22);
+            this.tB_Int1.TabIndex = 2;
+            this.tB_Int1.TextChanged += new System.EventHandler(this.tB_Int1_TextChanged);
             // 
-            // textBox3
+            // tB_Int2
             // 
-            this.textBox3.Location = new System.Drawing.Point(187, 324);
-            this.textBox3.Name = "textBox3";
-            this.textBox3.Size = new System.Drawing.Size(40, 22);
-            this.textBox3.TabIndex = 4;
+            this.tB_Int2.Location = new System.Drawing.Point(187, 324);
+            this.tB_Int2.Name = "tB_Int2";
+            this.tB_Int2.Size = new System.Drawing.Size(40, 22);
+            this.tB_Int2.TabIndex = 3;
+            this.tB_Int2.TextChanged += new System.EventHandler(this.tB_Int2_TextChanged);
             // 
             // label3
             // 
@@ -113,20 +116,19 @@
             this.label5.TabIndex = 7;
             this.label5.Text = "Int 3";
             // 
-            // label6
+            // lb_Error
             // 
-            this.label6.AutoSize = true;
-            this.label6.Font = new System.Drawing.Font("Arial", 7.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label6.ForeColor = System.Drawing.Color.Red;
-            this.label6.Location = new System.Drawing.Point(255, 273);
-            this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(256, 48);
-            this.label6.TabIndex = 8;
-            this.label6.Text = "Integers 1 and 2 can\'t both be even\r\nand have to be relatively prime.\r\n(common de" +
-    "nominator of 1)\r\n";
-            this.label6.TextAlign = System.Drawing.ContentAlignment.TopCenter;
-            this.label6.Visible = false;
-            this.label6.Click += new System.EventHandler(this.label6_Click);
+            this.lb_Error.AutoSize = true;
+            this.lb_Error.Font = new System.Drawing.Font("Arial", 7.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lb_Error.ForeColor = System.Drawing.Color.Red;
+            this.lb_Error.Location = new System.Drawing.Point(255, 273);
+            this.lb_Error.Name = "lb_Error";
+            this.lb_Error.Size = new System.Drawing.Size(256, 80);
+            this.lb_Error.TabIndex = 8;
+            this.lb_Error.Text = "Integers 1 and 2 can\'t both be even\r\nand have to be relatively prime.\r\n(common de" +
+    "nominator of 1)\r\nMust be between 1-10\r\n\r\n";
+            this.lb_Error.TextAlign = System.Drawing.ContentAlignment.TopCenter;
+            this.lb_Error.Visible = false;
             // 
             // bT_Validate
             // 
@@ -137,6 +139,7 @@
             this.bT_Validate.TabIndex = 9;
             this.bT_Validate.Text = "Validate";
             this.bT_Validate.UseVisualStyleBackColor = true;
+            this.bT_Validate.Click += new System.EventHandler(this.bT_Validate_Click);
             // 
             // bT_Next
             // 
@@ -157,17 +160,18 @@
             this.ClientSize = new System.Drawing.Size(582, 653);
             this.Controls.Add(this.bT_Next);
             this.Controls.Add(this.bT_Validate);
-            this.Controls.Add(this.label6);
+            this.Controls.Add(this.lb_Error);
             this.Controls.Add(this.label5);
             this.Controls.Add(this.label4);
             this.Controls.Add(this.label3);
-            this.Controls.Add(this.textBox3);
-            this.Controls.Add(this.textBox2);
-            this.Controls.Add(this.textBox1);
+            this.Controls.Add(this.tB_Int2);
+            this.Controls.Add(this.tB_Int1);
+            this.Controls.Add(this.tB_Int3);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
             this.Name = "Form3";
             this.Text = "Puzzle07 Editor: Water Puzzle";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Form3_FormClosing);
             this.Load += new System.EventHandler(this.Form3_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -178,13 +182,13 @@
 
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.TextBox textBox1;
-        private System.Windows.Forms.TextBox textBox2;
-        private System.Windows.Forms.TextBox textBox3;
+        private System.Windows.Forms.TextBox tB_Int3;
+        private System.Windows.Forms.TextBox tB_Int1;
+        private System.Windows.Forms.TextBox tB_Int2;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Label label5;
-        private System.Windows.Forms.Label label6;
+        private System.Windows.Forms.Label lb_Error;
         private System.Windows.Forms.Button bT_Validate;
         private System.Windows.Forms.Button bT_Next;
     }

@@ -163,6 +163,7 @@
             this.Controls.Add(this.label1);
             this.Name = "Form2";
             this.Text = "Puzzle 07 Editor: Settings";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Form2_FormClosing);
             this.Load += new System.EventHandler(this.Pz_Settings_Load);
             this.ResumeLayout(false);
             this.PerformLayout();

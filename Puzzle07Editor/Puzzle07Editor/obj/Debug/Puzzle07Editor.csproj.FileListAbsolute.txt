@@ -13,3 +13,19 @@ C:\Users\flame\Documents\Visual Studio 2015\Projects\Puzzle07Editor\Puzzle07Edit
 C:\Users\flame\Documents\Visual Studio 2015\Projects\Puzzle07Editor\Puzzle07Editor\obj\Debug\Puzzle07Editor.Form5.resources
 C:\Users\flame\Documents\Visual Studio 2015\Projects\Puzzle07Editor\Puzzle07Editor\obj\Debug\Puzzle07Editor.Form6.resources
 C:\Users\flame\Documents\Visual Studio 2015\Projects\Puzzle07Editor\Puzzle07Editor\obj\Debug\Puzzle07Editor.Form7.resources
+C:\Users\flame\Desktop\Puzzle07Git\Puzzle07Editor\Puzzle07Editor\bin\Debug\Puzzle07Editor.exe.config
+C:\Users\flame\Desktop\Puzzle07Git\Puzzle07Editor\Puzzle07Editor\obj\Debug\Puzzle07Editor.exe
+C:\Users\flame\Desktop\Puzzle07Git\Puzzle07Editor\Puzzle07Editor\obj\Debug\Puzzle07Editor.pdb
+C:\Users\flame\Desktop\Puzzle07Git\Puzzle07Editor\Puzzle07Editor\bin\Debug\Puzzle07Editor.exe
+C:\Users\flame\Desktop\Puzzle07Git\Puzzle07Editor\Puzzle07Editor\bin\Debug\Puzzle07Editor.pdb
+C:\Users\flame\Desktop\Puzzle07Git\Puzzle07Editor\Puzzle07Editor\obj\Debug\Puzzle07Editor.csprojResolveAssemblyReference.cache
+C:\Users\flame\Desktop\Puzzle07Git\Puzzle07Editor\Puzzle07Editor\obj\Debug\Puzzle07Editor.Pz_Main.resources
+C:\Users\flame\Desktop\Puzzle07Git\Puzzle07Editor\Puzzle07Editor\obj\Debug\Puzzle07Editor.Form3.resources
+C:\Users\flame\Desktop\Puzzle07Git\Puzzle07Editor\Puzzle07Editor\obj\Debug\Puzzle07Editor.Form4.resources
+C:\Users\flame\Desktop\Puzzle07Git\Puzzle07Editor\Puzzle07Editor\obj\Debug\Puzzle07Editor.Form5.resources
+C:\Users\flame\Desktop\Puzzle07Git\Puzzle07Editor\Puzzle07Editor\obj\Debug\Puzzle07Editor.Form6.resources
+C:\Users\flame\Desktop\Puzzle07Git\Puzzle07Editor\Puzzle07Editor\obj\Debug\Puzzle07Editor.Form7.resources
+C:\Users\flame\Desktop\Puzzle07Git\Puzzle07Editor\Puzzle07Editor\obj\Debug\Puzzle07Editor.Properties.Resources.resources
+C:\Users\flame\Desktop\Puzzle07Git\Puzzle07Editor\Puzzle07Editor\obj\Debug\Puzzle07Editor.Form2.resources
+C:\Users\flame\Desktop\Puzzle07Git\Puzzle07Editor\Puzzle07Editor\obj\Debug\Puzzle07Editor.csproj.GenerateResource.Cache
+C:\Users\flame\Desktop\Puzzle07Git\Puzzle07Editor\Puzzle07Editor\obj\Debug\Puzzle07Editor.Form8.resources

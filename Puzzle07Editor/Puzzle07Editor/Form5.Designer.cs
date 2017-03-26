@@ -138,6 +138,8 @@
             this.Controls.Add(this.label1);
             this.Name = "Form5";
             this.Text = "Puzzle07 Editor: Light Room";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Form5_FormClosing);
+            this.Load += new System.EventHandler(this.Form5_Load);
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();

@@ -32,9 +32,9 @@
             this.label2 = new System.Windows.Forms.Label();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.opt1 = new System.Windows.Forms.RadioButton();
-            this.opt2 = new System.Windows.Forms.RadioButton();
             this.opt3 = new System.Windows.Forms.RadioButton();
+            this.opt2 = new System.Windows.Forms.RadioButton();
+            this.opt1 = new System.Windows.Forms.RadioButton();
             this.bT_Next = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.groupBox1.SuspendLayout();
@@ -85,16 +85,16 @@
             this.groupBox1.Text = "Options";
             this.groupBox1.Enter += new System.EventHandler(this.groupBox1_Enter);
             // 
-            // opt1
+            // opt3
             // 
-            this.opt1.AutoSize = true;
-            this.opt1.Location = new System.Drawing.Point(36, 22);
-            this.opt1.Name = "opt1";
-            this.opt1.Size = new System.Drawing.Size(37, 20);
-            this.opt1.TabIndex = 0;
-            this.opt1.TabStop = true;
-            this.opt1.Text = "1";
-            this.opt1.UseVisualStyleBackColor = true;
+            this.opt3.AutoSize = true;
+            this.opt3.Location = new System.Drawing.Point(229, 22);
+            this.opt3.Name = "opt3";
+            this.opt3.Size = new System.Drawing.Size(37, 20);
+            this.opt3.TabIndex = 4;
+            this.opt3.TabStop = true;
+            this.opt3.Text = "3";
+            this.opt3.UseVisualStyleBackColor = true;
             // 
             // opt2
             // 
@@ -108,16 +108,17 @@
             this.opt2.UseVisualStyleBackColor = true;
             this.opt2.CheckedChanged += new System.EventHandler(this.opt2_CheckedChanged);
             // 
-            // opt3
+            // opt1
             // 
-            this.opt3.AutoSize = true;
-            this.opt3.Location = new System.Drawing.Point(229, 22);
-            this.opt3.Name = "opt3";
-            this.opt3.Size = new System.Drawing.Size(37, 20);
-            this.opt3.TabIndex = 4;
-            this.opt3.TabStop = true;
-            this.opt3.Text = "3";
-            this.opt3.UseVisualStyleBackColor = true;
+            this.opt1.AutoSize = true;
+            this.opt1.Location = new System.Drawing.Point(36, 22);
+            this.opt1.Name = "opt1";
+            this.opt1.Size = new System.Drawing.Size(37, 20);
+            this.opt1.TabIndex = 0;
+            this.opt1.TabStop = true;
+            this.opt1.Text = "1";
+            this.opt1.UseVisualStyleBackColor = true;
+            this.opt1.CheckedChanged += new System.EventHandler(this.opt1_CheckedChanged);
             // 
             // bT_Next
             // 
@@ -143,6 +144,8 @@
             this.Controls.Add(this.label1);
             this.Name = "Form4";
             this.Text = "Puzzle07 Editor: Lever Room";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Form4_FormClosing);
+            this.Load += new System.EventHandler(this.Form4_Load);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();

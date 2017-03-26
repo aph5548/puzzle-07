@@ -34,7 +34,13 @@ namespace Puzzle07Editor
 
         public void changeRooms()
         {
-            if (rooms[roomID] == "WaterRoom")
+            if(roomID == 4)
+            {
+                Form8 final = new Puzzle07Editor.Form8();
+                final.Enabled = true;
+                final.Visible = true;
+            }
+            else if (rooms[roomID] == "WaterRoom")
             {
                 Form3 WaterRoom = new Puzzle07Editor.Form3();
                 WaterRoom.Enabled = true;
