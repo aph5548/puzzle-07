@@ -1,0 +1,9 @@
+pZ07_test.txt
+StealthRoom
+3
+LeverRoom
+2
+SequenceRoom
+1 3 5 2 4  
+LightRoom
+1

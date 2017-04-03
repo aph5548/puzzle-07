@@ -84,3 +84,5 @@ C:\Users\Derek\Documents\School\Puzzle07\Puzzle07\Puzzle07\bin\Windows\x86\Debug
 C:\Users\Derek\Documents\School\Puzzle07\Puzzle07\Puzzle07\bin\Windows\x86\Debug\SharpDX.RawInput.xml
 C:\Users\Derek\Documents\School\Puzzle07\Puzzle07\Puzzle07\bin\Windows\x86\Debug\SharpDX.Direct3D9.xml
 C:\Users\Derek\Documents\School\Puzzle07\Puzzle07\Puzzle07\obj\x86\Debug\Puzzle07.csprojResolveAssemblyReference.cache
+C:\Users\flame\Desktop\Puzzle07Git\Puzzle07\Puzzle07\obj\x86\Debug\Puzzle07.exe
+C:\Users\flame\Desktop\Puzzle07Git\Puzzle07\Puzzle07\obj\x86\Debug\Puzzle07.pdb
