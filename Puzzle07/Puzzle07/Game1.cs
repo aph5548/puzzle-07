@@ -11,6 +11,9 @@ using System.Collections.Generic;
 namespace Puzzle07
 {
     enum GameState { Menu, Game, InGameMenu, GameOver };
+
+    // this enum will be used for the room transitions once rooms are set and made, if statements or switch statements will be made for each room and each will contain the code for the enum above along with their unique room and object code
+    enum RoomEnum {Room1, Room2, Room3, Room4 };
     /// <summary>
     /// This is the main type for your game.
     /// </summary>
@@ -40,7 +43,7 @@ namespace Puzzle07
         public Game1()
         {
             graphics = new GraphicsDeviceManager(this);
-            graphics.IsFullScreen = true;
+            graphics.IsFullScreen = false;
             Content.RootDirectory = "Content";
         }
 
@@ -325,7 +328,7 @@ namespace Puzzle07
         // method to keep player from going off screen
         void ScreenWrap(GameObject game)
         {
-            if(game.X >= GraphicsDevice.Viewport.Width)
+            if(game.X >= GraphicsDevice.Viewport.Width - player.Width)
             {
                 game.X = GraphicsDevice.Viewport.Width - player.Width;
             }
@@ -335,7 +338,7 @@ namespace Puzzle07
                 game.X = 0;
             }
 
-            if(game.Y >= GraphicsDevice.Viewport.Height)
+            if(game.Y >= GraphicsDevice.Viewport.Height - player.Height)
             {
                 game.Y = GraphicsDevice.Viewport.Height - player.Height;
             }
