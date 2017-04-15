@@ -61,6 +61,8 @@ namespace Puzzle07
             lightswitch = new Interactable(200, 200, 100, 100);
             kbState = Keyboard.GetState();
             this.IsMouseVisible = true;
+
+            interact.Add(lightswitch);
             
             base.Initialize();
         }
@@ -179,10 +181,10 @@ namespace Puzzle07
                     gameState = GameState.InGameMenu;
                 }
                 // main check for player collision that allows E press if in range
-                foreach(Interactable inter in interact)
+                /*foreach(Interactable inter in interact)
                 {
                     bool collision = inter.CheckCollision(player);
-                    if (collision && SingleKeyPress(Keys.E))
+                    if (collision == true && SingleKeyPress(Keys.E))
                     {
                         inter.Active = false;
                         if(inter == lightswitch)
@@ -195,17 +197,27 @@ namespace Puzzle07
                     }
                     
                     
+                }*/
+
+                bool isColliding = lightswitch.CheckCollision(player); 
+                if(isColliding == true && SingleKeyPress(Keys.E) && lightswitch.OnOff == false)
+                {
+                    lightswitch.OnOff = true;
+                }
+                else if(isColliding == true && SingleKeyPress(Keys.E) && lightswitch.OnOff == true)
+                {
+                    lightswitch.OnOff = false;
                 }
 
-               /*if(time < 0)
+               /*if(time =< 0)
                 {
                     gameState = GameState.GameOver;
                 }*/
 
-                /*if()
-                {
-                    NextLevel();
-                }*/
+                    /*if()
+                    {
+                        NextLevel();
+                    }*/
 
             }
 
@@ -255,7 +267,7 @@ namespace Puzzle07
 
             else if (gameState == GameState.Game)
             {
-                foreach(Interactable inter in interact)
+                /*foreach(Interactable inter in interact)
                 {
                     inter.Draw(spriteBatch);
 
@@ -263,12 +275,21 @@ namespace Puzzle07
                     if (lightswitch.CheckCollision(player) && SingleKeyPress(Keys.E))
                     {
                         GraphicsDevice.Clear(Color.Black);
-                        lightswitch.Active = true;
+                        lightswitch.OnOff = true;
                         if (lightswitch.CheckCollision(player) && SingleKeyPress(Keys.E))
                         {
                             GraphicsDevice.Clear(Color.CornflowerBlue);
                         }
                     }
+                }*/
+                lightswitch.Draw(spriteBatch);
+                if(lightswitch.OnOff == true)
+                {
+                    GraphicsDevice.Clear(Color.Black);
+                }
+                else
+                {
+                    GraphicsDevice.Clear(Color.CornflowerBlue);
                 }
                 
                 spriteBatch.Draw(player.Texture, player.Position, Color.White);
@@ -325,9 +346,9 @@ namespace Puzzle07
         // method to keep player from going off screen
         void ScreenWrap(GameObject game)
         {
-            if(game.X >= GraphicsDevice.Viewport.Width)
+            if(game.X >= (GraphicsDevice.Viewport.Width - player.Width))
             {
-                game.X = GraphicsDevice.Viewport.Width - player.Width;
+                game.X = (GraphicsDevice.Viewport.Width - player.Width);
             }
 
             else if (game.X < 0)
@@ -335,7 +356,7 @@ namespace Puzzle07
                 game.X = 0;
             }
 
-            if(game.Y >= GraphicsDevice.Viewport.Height)
+            if(game.Y >= (GraphicsDevice.Viewport.Height - player.Height)) //Quality of life improvement, now properly prevents the player from leaving the boundaries of the room.
             {
                 game.Y = GraphicsDevice.Viewport.Height - player.Height;
             }

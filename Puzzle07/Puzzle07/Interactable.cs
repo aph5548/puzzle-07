@@ -17,8 +17,14 @@ namespace Puzzle07
 
         // variable for interactable item state
         bool active;
-
+        bool onOff; //If on, value is true, false if off
        
+        //Accesor for onOff
+        public bool OnOff
+        {
+            get { return onOff; }
+            set { onOff = value; }
+        }
 
         // accessor for active
         public bool Active
@@ -38,14 +44,23 @@ namespace Puzzle07
         public Interactable(int x, int y, int width, int height) : base(x, y, width, height)
         {
             active = true;
+            onOff = false;
         }
 
         // collistion check to see if player is within range of interactable
-        public bool CheckCollision(GameObject game)
+        public bool CheckCollision(GameObject game) //Michael: Making a change for this method to work probably. Currently it looks for active being true, which it shouldn't.
         {
-            if (Active)
+            if (active == true) //Added new onOff bool, the collision will now set onOff instead of active, active meaning the object is interactable. - Michael
             {
-                return game.Position.Intersects(this.Position);
+                if (game.Position.Intersects(this.Position))
+                {
+                    return true;
+
+                }
+                else
+                {
+                    return false;
+                }
             }
             else
             {
@@ -62,3 +77,4 @@ namespace Puzzle07
         }
     }
 }
+
