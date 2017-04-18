@@ -11,6 +11,9 @@ using System.Collections.Generic;
 namespace Puzzle07
 {
     enum GameState { Menu, Game, InGameMenu, GameOver };
+
+    // this enum will be used for the room transitions once rooms are set and made, if statements or switch statements will be made for each room and each will contain the code for the enum above along with their unique room and object code
+    enum RoomEnum {Room1, Room2, Room3, Room4 };
     /// <summary>
     /// This is the main type for your game.
     /// </summary>
@@ -42,7 +45,7 @@ namespace Puzzle07
         public Game1()
         {
             graphics = new GraphicsDeviceManager(this);
-            graphics.IsFullScreen = true;
+            graphics.IsFullScreen = false;
             Content.RootDirectory = "Content";
             //graphics.PreferredBackBufferWidth = 1280; Can be commented back in, changes the size of the screen. C; - Michael
             //graphics.PreferredBackBufferHeight = 1024;
@@ -349,7 +352,11 @@ namespace Puzzle07
         // method to keep player from going off screen
         void ScreenWrap(GameObject game)
         {
+<<<<<<< HEAD
             if(game.X >= (GraphicsDevice.Viewport.Width - player.Width))
+=======
+            if(game.X >= GraphicsDevice.Viewport.Width - player.Width)
+>>>>>>> 4f85c6e68b32a52d72ff5692f47dc9b5d392a037
             {
                 game.X = (GraphicsDevice.Viewport.Width - player.Width);
             }
@@ -359,7 +366,11 @@ namespace Puzzle07
                 game.X = 0;
             }
 
+<<<<<<< HEAD
             if(game.Y >= (GraphicsDevice.Viewport.Height - player.Height)) //Quality of life improvement, now properly prevents the player from leaving the boundaries of the room.
+=======
+            if(game.Y >= GraphicsDevice.Viewport.Height - player.Height)
+>>>>>>> 4f85c6e68b32a52d72ff5692f47dc9b5d392a037
             {
                 game.Y = GraphicsDevice.Viewport.Height - player.Height;
             }
