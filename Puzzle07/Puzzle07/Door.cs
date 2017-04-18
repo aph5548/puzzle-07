@@ -45,22 +45,28 @@ namespace Puzzle07
         {
             if(player.Position.Intersects(Position) == true && isOpen == false)
             {
-                if(X - player.X > Width - player.Width)
+                if (player.IsHorizontal == true)
                 {
-                    player.X = Width - player.Width;
-                }
-                else if(player.X + X < Width)
-                {
-                    player.X = Width;
+                    if (player.X > X - player.Width && (X - player.X) > 0)
+                    {
+                        player.X = X - player.Width;
+                    }
+                    else if (player.X - X < player.X - Width)
+                    {
+                        player.X = X + Width;
+                    }
                 }
 
-                if (Y - player.Y > Height - player.Height)
+                else if(player.IsHorizontal == false)
                 {
-                    player.Y = player.Height - Height;
-                }
-                else if(player.Y + Y < Height)
-                {
-                    player.Y = Height;
+                    if (player.Y > Y - player.Height && (Y - player.Y) > 0)
+                    {
+                        player.Y = Y - player.Height;
+                    }
+                    else if (player.Y - Y < Y + Height)
+                    {
+                        player.Y = Y + Height;
+                    }
                 }
             }
         }

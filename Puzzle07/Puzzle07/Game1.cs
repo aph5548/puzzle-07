@@ -44,6 +44,8 @@ namespace Puzzle07
             graphics = new GraphicsDeviceManager(this);
             graphics.IsFullScreen = true;
             Content.RootDirectory = "Content";
+            //graphics.PreferredBackBufferWidth = 1280; Can be commented back in, changes the size of the screen. C; - Michael
+            //graphics.PreferredBackBufferHeight = 1024;
         }
 
        
@@ -63,7 +65,7 @@ namespace Puzzle07
             lightswitch = new Interactable(200, 200, 100, 100);
             kbState = Keyboard.GetState();
             this.IsMouseVisible = true;
-            testDoor = new Door(200, 400, 32, 32);
+            testDoor = new Door(400, 200, 128, 128);
             testLever = new Puzzle07.Lever(testDoor, 300, 300, 32, 32);
 
             interact.Add(lightswitch);

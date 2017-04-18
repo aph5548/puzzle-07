@@ -16,19 +16,25 @@ namespace Puzzle07
     class Player : GameObject
     {
         // variables for texture and position
-        
+
 
         // variables for score might be used later, commented out for now
         // int levelScore;
         //int totalScore;
 
+        private bool isHorizontal; //Was going to use an enum, but this implemented better.
+
         public Player(int x, int y, int width, int height) : base(x, y, width, height)
         {
-            
             //levelScore = 0;
             //totalScore = 0;
         }
-        
+        //Acccesor
+        public bool IsHorizontal
+        {
+            get { return isHorizontal; }
+        }
+
         // accessors for score
         /* public int LevelScore
         {
@@ -62,6 +68,7 @@ namespace Puzzle07
             {
                 //wasd[0] = true;
                 Position = new Rectangle(X, Y - 5, Width, Height);
+                isHorizontal = false;
             }
 
             else
@@ -73,6 +80,7 @@ namespace Puzzle07
             {
                 //wasd[1] = true;
                 Position = new Rectangle(X - 5, Y, Width, Height);
+                isHorizontal = true;
             }
 
             else
@@ -84,6 +92,7 @@ namespace Puzzle07
             {
                 //wasd[2] = true;
                 Position = new Rectangle(X, Y + 5, Width, Height);
+                isHorizontal = false;
             }
 
             else
@@ -95,6 +104,7 @@ namespace Puzzle07
             {
                 //wasd[3] = true;
                 Position = new Rectangle(X + 5, Y, Width, Height);
+                isHorizontal = true;
             }
 
             else
