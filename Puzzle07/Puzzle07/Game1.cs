@@ -29,6 +29,8 @@ namespace Puzzle07
         int level;
         GameObject objectTest;
         Interactable lightswitch;
+        Lever testLever;
+        Door testDoor;
         //double time;
         
         
@@ -61,6 +63,8 @@ namespace Puzzle07
             lightswitch = new Interactable(200, 200, 100, 100);
             kbState = Keyboard.GetState();
             this.IsMouseVisible = true;
+            testDoor = new Door(200, 400, 32, 32);
+            testLever = new Puzzle07.Lever(testDoor, 300, 300, 32, 32);
 
             interact.Add(lightswitch);
             
@@ -85,6 +89,8 @@ namespace Puzzle07
             font = Content.Load<SpriteFont>("mainFont");
             player.Texture = sprite;
             lightswitch.Texture = interSprite1;
+            testLever.Texture = interSprite1;
+            testDoor.Texture = interSprite1;
         }
 
         /// <summary>
@@ -125,54 +131,12 @@ namespace Puzzle07
 
             else if(gameState == GameState.Game)
             {
-                
 
+                player.Move(kbState); //Made a move method so that we're not looking at a massive if statement - Michael
                 //time -= gameTime.ElapsedGameTime.TotalSeconds;
 
                 // if statements to check if each of the movement keys are being pressed
-                if (kbState.IsKeyDown(Keys.W))
-                {
-                    wasd[0] = true;
-                    player.Position = new Rectangle(player.X, player.Y - 5, player.Width, player.Height);
-                }
-
-                else
-                {
-                    wasd[0] = false;
-                }
-
-                if (kbState.IsKeyDown(Keys.A))
-                {
-                    wasd[1] = true;
-                    player.Position = new Rectangle(player.X - 5, player.Y, player.Width, player.Height);
-                }
-
-                else
-                {
-                    wasd[1] = false;
-                }
-
-                if (kbState.IsKeyDown(Keys.S))
-                {
-                    wasd[2] = true;
-                    player.Position = new Rectangle(player.X, player.Y + 5, player.Width, player.Height);
-                }
-
-                else
-                {
-                    wasd[2] = false;
-                }
-
-                if (kbState.IsKeyDown(Keys.D))
-                {
-                    wasd[3] = true;
-                    player.Position = new Rectangle(player.X + 5, player.Y, player.Width, player.Height);
-                }
-
-                else
-                {
-                    wasd[3] = false;
-                }
+                
 
                 ScreenWrap(player);
 
@@ -208,6 +172,22 @@ namespace Puzzle07
                 {
                     lightswitch.OnOff = false;
                 }
+
+                isColliding = testLever.CheckCollision(player);
+                if(isColliding == true && SingleKeyPress(Keys.E))
+                {
+                    testLever.StateChanged();
+                    if(testLever.OnOff == true)
+                    {
+                        testLever.OnOff = false;
+                    }
+                    else
+                    {
+                        testLever.OnOff = true;
+                    }
+                }
+
+                testDoor.Collision(player);
 
                /*if(time =< 0)
                 {
@@ -291,11 +271,32 @@ namespace Puzzle07
                 {
                     GraphicsDevice.Clear(Color.CornflowerBlue);
                 }
-                
+                //To be commented out and removed
                 spriteBatch.Draw(player.Texture, player.Position, Color.White);
+                spriteBatch.Draw(testLever.Texture, testLever.Position, Color.White);
+                spriteBatch.Draw(testDoor.Texture, testDoor.Position, Color.White);
+                if(testDoor.IsOpen == true)
+                {
+                    spriteBatch.DrawString(font, "Open", new Vector2(testDoor.X, testDoor.Y), Color.Black);
+                }
+                else if(testDoor.IsOpen == false)
+                {
+                    spriteBatch.DrawString(font, "Closed", new Vector2(testDoor.X, testDoor.Y), Color.Black);
+                }
+
+                if (testLever.OnOff == true)
+                {
+                    spriteBatch.DrawString(font, "On", new Vector2(testLever.X, testLever.Y), Color.Black);
+                }
+                else if (testLever.OnOff == false)
+                {
+                    spriteBatch.DrawString(font, "Off", new Vector2(testLever.X, testLever.Y), Color.Black);
+                }
+
+
                 //spriteBatch.DrawString(font, "Room: " + level, new Vector2(10, 10), Color.Black);
                 //spriteBatch.DrawString(font, string.Format("Time: {0:0.00}", time), new Vector2(400, 10), Color.Black);
-               
+
 
             }
 

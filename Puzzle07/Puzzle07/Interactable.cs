@@ -16,8 +16,8 @@ namespace Puzzle07
     {
 
         // variable for interactable item state
-        bool active;
-        bool onOff; //If on, value is true, false if off
+        private bool active;
+        private bool onOff; //If on, value is true, false if off
        
         //Accesor for onOff
         public bool OnOff

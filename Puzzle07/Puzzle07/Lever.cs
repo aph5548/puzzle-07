@@ -28,19 +28,38 @@ namespace Puzzle07
         public Lever(Door d1, int x, int y, int width, int height) : base(x, y, width, height) //Constructor for a single door.
         {
             door1 = d1;
-            this.Active = false;
+            door2 = null;
+            this.Active = true;
+            this.OnOff = false;
         }
 
         public Lever(Door d1, Door d2, int x, int y, int width, int height) : base(x, y, width, height)
         {
             door1 = d1;
             door2 = d2;
-            this.Active = false;
+            this.Active = true;
+            this.OnOff = false;
         }
 
-        public void StateChanged()
+        public void StateChanged() //Changes the state of the door
         {
+            if(door1.IsOpen == true)
+            {
+                door1.OpenDoor(false);
+            }
+            else
+            {
+                door1.OpenDoor(true);
+            }
 
+            if(door2 != null && door2.IsOpen == true)
+            {
+                door2.OpenDoor(false);
+            }
+            else if(door2 != null && door2.IsOpen == false)
+            {
+                door2.OpenDoor(true);
+            }
         }
 
     }
