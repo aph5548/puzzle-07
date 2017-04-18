@@ -34,6 +34,7 @@ namespace Puzzle07
         Interactable lightswitch;
         Lever testLever;
         Door testDoor;
+        Cursor cursor;
         //double time;
         
         
@@ -42,10 +43,11 @@ namespace Puzzle07
         string[] wasdStr = { "W", "A", "S", "D" };
         KeyboardState kbState;
         KeyboardState previousKbState;
+        MouseState mouse;
         public Game1()
         {
             graphics = new GraphicsDeviceManager(this);
-            graphics.IsFullScreen = false;
+            graphics.IsFullScreen = true;
             Content.RootDirectory = "Content";
             //graphics.PreferredBackBufferWidth = 1280; Can be commented back in, changes the size of the screen. C; - Michael
             //graphics.PreferredBackBufferHeight = 1024;
@@ -67,9 +69,10 @@ namespace Puzzle07
             interact = new List<Interactable>();
             lightswitch = new Interactable(200, 200, 100, 100);
             kbState = Keyboard.GetState();
-            this.IsMouseVisible = true;
+            this.IsMouseVisible = false;
             testDoor = new Door(400, 200, 128, 128);
             testLever = new Puzzle07.Lever(testDoor, 300, 300, 32, 32);
+            cursor = new Cursor(0, 0, 16, 16);
 
             interact.Add(lightswitch);
             
@@ -96,6 +99,7 @@ namespace Puzzle07
             lightswitch.Texture = interSprite1;
             testLever.Texture = interSprite1;
             testDoor.Texture = interSprite1;
+            cursor.Texture = interSprite1;
         }
 
         /// <summary>
@@ -122,6 +126,9 @@ namespace Puzzle07
 
             // gets new keyborad state
             kbState = Keyboard.GetState();
+
+            mouse = Mouse.GetState();
+            cursor.Update(mouse);
             // finite state machine checks
             if (gameState == GameState.Menu)
             {
@@ -239,6 +246,7 @@ namespace Puzzle07
 
             // TODO: Add your drawing code here
             spriteBatch.Begin();
+            cursor.Draw(spriteBatch);
 
             // check game state and draw what is needed in each
             if (gameState == GameState.Menu)
@@ -352,11 +360,8 @@ namespace Puzzle07
         // method to keep player from going off screen
         void ScreenWrap(GameObject game)
         {
-<<<<<<< HEAD
-            if(game.X >= (GraphicsDevice.Viewport.Width - player.Width))
-=======
+
             if(game.X >= GraphicsDevice.Viewport.Width - player.Width)
->>>>>>> 4f85c6e68b32a52d72ff5692f47dc9b5d392a037
             {
                 game.X = (GraphicsDevice.Viewport.Width - player.Width);
             }
@@ -366,11 +371,10 @@ namespace Puzzle07
                 game.X = 0;
             }
 
-<<<<<<< HEAD
-            if(game.Y >= (GraphicsDevice.Viewport.Height - player.Height)) //Quality of life improvement, now properly prevents the player from leaving the boundaries of the room.
-=======
+
+            //Quality of life improvement, now properly prevents the player from leaving the boundaries of the room.
+
             if(game.Y >= GraphicsDevice.Viewport.Height - player.Height)
->>>>>>> 4f85c6e68b32a52d72ff5692f47dc9b5d392a037
             {
                 game.Y = GraphicsDevice.Viewport.Height - player.Height;
             }
