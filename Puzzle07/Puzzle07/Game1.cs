@@ -21,6 +21,7 @@ namespace Puzzle07
     {
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
+        Texture2D cup;
         Texture2D sprite;
         Texture2D objectSprite1;
         Texture2D interSprite1;
@@ -97,12 +98,13 @@ namespace Puzzle07
             buttonTexture = Content.Load<Texture2D>("buttonTexture");
             menuTitle = Content.Load<Texture2D>("menuTitle");
             font = Content.Load<SpriteFont>("mainFont");
+            cup = Content.Load<Texture2D>("Cup");
             player.Texture = sprite;
             lightswitch.Texture = interSprite1;
             testLever.Texture = interSprite1;
             testDoor.Texture = interSprite1;
             cursor.Texture = interSprite1;
-            testContainer.Texture = interSprite1;
+            testContainer.Texture = cup;
         }
 
         /// <summary>

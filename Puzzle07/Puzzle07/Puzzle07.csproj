@@ -79,6 +79,9 @@
     <Content Include="Content\buttonTexture.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="Content\Cup.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Content\enemySprite.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

@@ -20,12 +20,21 @@ namespace Puzzle07
         //attributes
         KeyboardState kbState;
         Player player;
+        private bool isComplete;
 
         //Constructor
         public Room(KeyboardState kState, Player plyr)
         {
             kbState = kState;
             player = plyr;
+            isComplete = false;
+        }
+
+        //Accessor
+        public bool Complete
+        {
+            get { return isComplete; }
+            set { isComplete = value; }
         }
 
         //Update method: Handles any relevant updates:

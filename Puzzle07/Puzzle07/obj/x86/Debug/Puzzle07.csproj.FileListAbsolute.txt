@@ -114,3 +114,4 @@ C:\Users\flame\Desktop\Puzzle07Git\Puzzle07\Puzzle07\bin\Windows\x86\Debug\Sharp
 C:\Users\flame\Desktop\Puzzle07Git\Puzzle07\Puzzle07\bin\Windows\x86\Debug\SharpDX.RawInput.xml
 C:\Users\flame\Desktop\Puzzle07Git\Puzzle07\Puzzle07\bin\Windows\x86\Debug\SharpDX.Direct3D9.xml
 C:\Users\flame\Desktop\Puzzle07Git\Puzzle07\Puzzle07\obj\x86\Debug\Puzzle07.csprojResolveAssemblyReference.cache
+C:\Users\flame\Desktop\Puzzle07Git\Puzzle07\Puzzle07\bin\Windows\x86\Debug\Content\Cup.png
