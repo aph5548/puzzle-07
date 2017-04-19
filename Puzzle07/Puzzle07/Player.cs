@@ -22,7 +22,7 @@ namespace Puzzle07
         // int levelScore;
         //int totalScore;
 
-        private bool isHorizontal; //Was going to use an enum, but this implemented better.
+        private bool[] wasd = { false, false, false, false }; //Was going to use an enum, but this implemented better.
 
         public Player(int x, int y, int width, int height) : base(x, y, width, height)
         {
@@ -30,9 +30,9 @@ namespace Puzzle07
             //totalScore = 0;
         }
         //Acccesor
-        public bool IsHorizontal
+        public bool Direction(int i)
         {
-            get { return isHorizontal; }
+            return wasd[i];
         }
 
         // accessors for score
@@ -66,50 +66,48 @@ namespace Puzzle07
         {
             if (kbState.IsKeyDown(Keys.W))
             {
-                //wasd[0] = true;
+                wasd[0] = true;
                 Position = new Rectangle(X, Y - 5, Width, Height);
-                isHorizontal = false;
+                
             }
 
             else
             {
-                //wasd[0] = false;
+                wasd[0] = false;
             }
 
             if (kbState.IsKeyDown(Keys.A))
             {
-                //wasd[1] = true;
+                wasd[1] = true;
                 Position = new Rectangle(X - 5, Y, Width, Height);
-                isHorizontal = true;
+                
             }
 
             else
             {
-                //wasd[1] = false;
+                wasd[1] = false;
             }
 
             if (kbState.IsKeyDown(Keys.S))
             {
-                //wasd[2] = true;
+                wasd[2] = true;
                 Position = new Rectangle(X, Y + 5, Width, Height);
-                isHorizontal = false;
             }
 
             else
             {
-                //wasd[2] = false;
+                wasd[2] = false;
             }
 
             if (kbState.IsKeyDown(Keys.D))
             {
-                //wasd[3] = true;
+                wasd[3] = true;
                 Position = new Rectangle(X + 5, Y, Width, Height);
-                isHorizontal = true;
             }
 
             else
             {
-                //wasd[3] = false;
+                wasd[3] = false;
             }
         }
     }

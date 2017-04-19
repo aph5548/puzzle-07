@@ -49,8 +49,8 @@ namespace Puzzle07
             graphics = new GraphicsDeviceManager(this);
             graphics.IsFullScreen = true;
             Content.RootDirectory = "Content";
-            //graphics.PreferredBackBufferWidth = 1280; Can be commented back in, changes the size of the screen. C; - Michael
-            //graphics.PreferredBackBufferHeight = 1024;
+            graphics.PreferredBackBufferWidth = 1280; //Can be commented back in, changes the size of the screen. C; - Michael
+            graphics.PreferredBackBufferHeight = 1024;
         }
 
        
@@ -69,7 +69,7 @@ namespace Puzzle07
             interact = new List<Interactable>();
             lightswitch = new Interactable(200, 200, 100, 100);
             kbState = Keyboard.GetState();
-            this.IsMouseVisible = false;
+            this.IsMouseVisible = true  ;
             testDoor = new Door(400, 200, 128, 128);
             testLever = new Puzzle07.Lever(testDoor, 300, 300, 32, 32);
             cursor = new Cursor(0, 0, 16, 16);
@@ -156,24 +156,6 @@ namespace Puzzle07
                 {
                     gameState = GameState.InGameMenu;
                 }
-                // main check for player collision that allows E press if in range
-                /*foreach(Interactable inter in interact)
-                {
-                    bool collision = inter.CheckCollision(player);
-                    if (collision == true && SingleKeyPress(Keys.E))
-                    {
-                        inter.Active = false;
-                        if(inter == lightswitch)
-                        {
-                            
-                            lightswitch.Active = true;
-                            
-                        }
-                        
-                    }
-                    
-                    
-                }*/
 
                 bool isColliding = lightswitch.CheckCollision(player); 
                 if(isColliding == true && SingleKeyPress(Keys.E) && lightswitch.OnOff == false)
@@ -260,21 +242,6 @@ namespace Puzzle07
 
             else if (gameState == GameState.Game)
             {
-                /*foreach(Interactable inter in interact)
-                {
-                    inter.Draw(spriteBatch);
-
-                    // changing background color on collision and key press not working currently, fix tomorrow in meeting
-                    if (lightswitch.CheckCollision(player) && SingleKeyPress(Keys.E))
-                    {
-                        GraphicsDevice.Clear(Color.Black);
-                        lightswitch.OnOff = true;
-                        if (lightswitch.CheckCollision(player) && SingleKeyPress(Keys.E))
-                        {
-                            GraphicsDevice.Clear(Color.CornflowerBlue);
-                        }
-                    }
-                }*/
                 lightswitch.Draw(spriteBatch);
                 if(lightswitch.OnOff == true)
                 {
@@ -306,6 +273,7 @@ namespace Puzzle07
                     spriteBatch.DrawString(font, "Off", new Vector2(testLever.X, testLever.Y), Color.Black);
                 }
 
+                spriteBatch.Draw(player.Texture, player.Position, Color.White);
 
                 //spriteBatch.DrawString(font, "Room: " + level, new Vector2(10, 10), Color.Black);
                 //spriteBatch.DrawString(font, string.Format("Time: {0:0.00}", time), new Vector2(400, 10), Color.Black);
