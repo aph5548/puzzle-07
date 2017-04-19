@@ -27,6 +27,7 @@ namespace Puzzle07
         Texture2D interSprite1;
         Texture2D buttonTexture;
         Texture2D menuTitle;
+        Texture2D spriteSheet;
         SpriteFont font;
         Player player;
         List<Interactable> interact;
@@ -37,6 +38,7 @@ namespace Puzzle07
         Door testDoor;
         Cursor cursor;
         WaterContainer testContainer;
+        Sprite testSprite;
         //double time;
         
         
@@ -76,7 +78,7 @@ namespace Puzzle07
             testLever = new Puzzle07.Lever(testDoor, 300, 300, 32, 32);
             cursor = new Cursor(0, 0, 16, 16);
             testContainer = new WaterContainer(5, 0, 500, 500, 32, 32);
-
+            testSprite = new Puzzle07.Sprite(32, 32, 50, 8, new Vector2(100, 700));
             interact.Add(lightswitch);
             
             base.Initialize();
@@ -99,12 +101,14 @@ namespace Puzzle07
             menuTitle = Content.Load<Texture2D>("menuTitle");
             font = Content.Load<SpriteFont>("mainFont");
             cup = Content.Load<Texture2D>("Cup");
+            spriteSheet = Content.Load<Texture2D>("testSpriteSheet");
             player.Texture = sprite;
             lightswitch.Texture = interSprite1;
             testLever.Texture = interSprite1;
             testDoor.Texture = interSprite1;
             cursor.Texture = interSprite1;
             testContainer.Texture = cup;
+            testSprite.Image = spriteSheet;
         }
 
         /// <summary>
@@ -200,6 +204,7 @@ namespace Puzzle07
                 }
 
                 testContainer.Update(gameTime, player);
+                testSprite.Update(gameTime);
 
                /*if(time =< 0)
                 {
@@ -294,6 +299,8 @@ namespace Puzzle07
                 spriteBatch.Draw(player.Texture, player.Position, Color.White);
 
                 testContainer.Draw(spriteBatch);
+
+                testSprite.Draw(spriteBatch);
 
                 //spriteBatch.DrawString(font, "Room: " + level, new Vector2(10, 10), Color.Black);
                 //spriteBatch.DrawString(font, string.Format("Time: {0:0.00}", time), new Vector2(400, 10), Color.Black);
