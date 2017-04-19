@@ -35,6 +35,7 @@ namespace Puzzle07
         Lever testLever;
         Door testDoor;
         Cursor cursor;
+        WaterContainer testContainer;
         //double time;
         
         
@@ -73,6 +74,7 @@ namespace Puzzle07
             testDoor = new Door(400, 200, 128, 128);
             testLever = new Puzzle07.Lever(testDoor, 300, 300, 32, 32);
             cursor = new Cursor(0, 0, 16, 16);
+            testContainer = new WaterContainer(5, 0, 500, 500, 32, 32);
 
             interact.Add(lightswitch);
             
@@ -100,6 +102,7 @@ namespace Puzzle07
             testLever.Texture = interSprite1;
             testDoor.Texture = interSprite1;
             cursor.Texture = interSprite1;
+            testContainer.Texture = interSprite1;
         }
 
         /// <summary>
@@ -182,6 +185,19 @@ namespace Puzzle07
                 }
 
                 testDoor.Collision(player);
+
+                isColliding = testContainer.CheckCollision(player);
+                if(isColliding && SingleKeyPress(Keys.E))
+                {
+                    testContainer.OnOff = true;
+                }
+
+                if(testContainer.OnOff == true && SingleKeyPress(Keys.Q))
+                {
+                    testContainer.OnOff = false;
+                }
+
+                testContainer.Update(gameTime, player);
 
                /*if(time =< 0)
                 {
@@ -274,6 +290,8 @@ namespace Puzzle07
                 }
 
                 spriteBatch.Draw(player.Texture, player.Position, Color.White);
+
+                testContainer.Draw(spriteBatch);
 
                 //spriteBatch.DrawString(font, "Room: " + level, new Vector2(10, 10), Color.Black);
                 //spriteBatch.DrawString(font, string.Format("Time: {0:0.00}", time), new Vector2(400, 10), Color.Black);

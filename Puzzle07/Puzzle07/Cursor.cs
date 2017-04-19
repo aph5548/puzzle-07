@@ -7,6 +7,12 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Graphics;
 
+/*
+ * Michael Capra
+ * Cursor Class
+ * IS a cursor for buttons, takes the mouses position as it's position (Is not accurately reflected by the mouse itself)
+ */
+
 namespace Puzzle07
 {
     class Cursor:GameObject

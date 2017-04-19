@@ -31,7 +31,7 @@ namespace Puzzle07
             //Draw buttons
         }
 
-        public void Update(KeyboardState kbState)
+        public void Update(MouseState mouse)
         {
             //Check button collisions (basically, check to see if they're clicked.
         }
