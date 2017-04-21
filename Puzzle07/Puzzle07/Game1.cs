@@ -13,7 +13,7 @@ namespace Puzzle07
     enum GameState { Menu, Game, InGameMenu, GameOver };
 
     // this enum will be used for the room transitions once rooms are set and made, if statements or switch statements will be made for each room and each will contain the code for the enum above along with their unique room and object code
-    enum RoomEnum {Room1, Room2, Room3, Room4 };
+    enum RoomEnum {Room1, Room2 /*, Room3, Room4*/ };
     /// <summary>
     /// This is the main type for your game.
     /// </summary>
@@ -43,6 +43,9 @@ namespace Puzzle07
         
         
         GameState gameState;
+        RoomEnum roomState;
+        WaterRoom waterRoom;
+        Random rngWater;
         Boolean[] wasd = { false, false, false, false };
         string[] wasdStr = { "W", "A", "S", "D" };
         KeyboardState kbState;
@@ -69,7 +72,9 @@ namespace Puzzle07
         {
             // TODO: Add your initialization logic here
             player = new Player(GraphicsDevice.Viewport.Width / 2, GraphicsDevice.Viewport.Height / 2, 100, 100);
+            rngWater = new Random();
             gameState = GameState.Menu;
+            roomState = RoomEnum.Room1;
             interact = new List<Interactable>();
             lightswitch = new Interactable(200, 200, 100, 100);
             kbState = Keyboard.GetState();
@@ -79,6 +84,7 @@ namespace Puzzle07
             cursor = new Cursor(0, 0, 16, 16);
             testContainer = new WaterContainer(5, 0, 500, 500, 32, 32);
             testSprite = new Puzzle07.Sprite(32, 32, 50, 8, new Vector2(100, 700));
+            waterRoom = new WaterRoom(kbState, player, new Rectangle(0, 600, 128, 128), new Rectangle(100, 100, 128, 128), new Rectangle(600, 200, 64, 64), new Rectangle(750, 100, 64, 64), rngWater.Next(2, 7), rngWater.Next(2, 7));
             interact.Add(lightswitch);
             
             base.Initialize();
@@ -108,6 +114,10 @@ namespace Puzzle07
             testDoor.Texture = interSprite1;
             cursor.Texture = interSprite1;
             testContainer.Texture = cup;
+            waterRoom.WaterContainer1.Texture = cup;
+            waterRoom.WaterContainer2.Texture = cup;
+            waterRoom.Sink.Texture = interSprite1;
+            waterRoom.FinalContainer.Texture = cup;
             testSprite.Image = spriteSheet;
         }
 
@@ -139,106 +149,261 @@ namespace Puzzle07
             mouse = Mouse.GetState();
             cursor.Update(mouse);
             // finite state machine checks
-            if (gameState == GameState.Menu)
+            if (roomState == RoomEnum.Room1)
             {
-                
-                if (SingleKeyPress(Keys.Enter))
+                if (gameState == GameState.Menu)
+                {
+
+                    if (SingleKeyPress(Keys.Enter))
+                    {
+
+                        gameState = GameState.Game;
+                        ResetGame();
+                    }
+                }
+
+                else if (gameState == GameState.Game)
                 {
                     
-                    gameState = GameState.Game;
-                    ResetGame();
-                }
-            }
+                    player.Move(kbState); //Made a move method so that we're not looking at a massive if statement - Michael
+                                          //time -= gameTime.ElapsedGameTime.TotalSeconds;
 
-            else if(gameState == GameState.Game)
-            {
+                    
 
-                player.Move(kbState); //Made a move method so that we're not looking at a massive if statement - Michael
-                //time -= gameTime.ElapsedGameTime.TotalSeconds;
 
-                // if statements to check if each of the movement keys are being pressed
-                
+                    ScreenWrap(player);
 
-                ScreenWrap(player);
-
-                if (SingleKeyPress(Keys.P))
-                {
-                    gameState = GameState.InGameMenu;
-                }
-
-                bool isColliding = lightswitch.CheckCollision(player); 
-                if(isColliding == true && SingleKeyPress(Keys.E) && lightswitch.OnOff == false)
-                {
-                    lightswitch.OnOff = true;
-                }
-                else if(isColliding == true && SingleKeyPress(Keys.E) && lightswitch.OnOff == true)
-                {
-                    lightswitch.OnOff = false;
-                }
-
-                isColliding = testLever.CheckCollision(player);
-                if(isColliding == true && SingleKeyPress(Keys.E))
-                {
-                    testLever.StateChanged();
-                    if(testLever.OnOff == true)
+                    if (SingleKeyPress(Keys.P))
                     {
-                        testLever.OnOff = false;
+                        gameState = GameState.InGameMenu;
                     }
-                    else
+
+                    //bool isColliding = lightswitch.CheckCollision(player);
+                    /*
+                    if (isColliding == true && SingleKeyPress(Keys.E) && lightswitch.OnOff == false) // kept this code here just in case anyone wanted to reuse it - Austin
                     {
-                        testLever.OnOff = true;
+                        lightswitch.OnOff = true;
                     }
-                }
+                    else if (isColliding == true && SingleKeyPress(Keys.E) && lightswitch.OnOff == true)
+                    {
+                        lightswitch.OnOff = false;
+                    }
 
-                testDoor.Collision(player);
+                    isColliding = testLever.CheckCollision(player);
+                    if (isColliding == true && SingleKeyPress(Keys.E))
+                    {
+                        testLever.StateChanged();
+                        if (testLever.OnOff == true)
+                        {
+                            testLever.OnOff = false;
+                        }
+                        else
+                        {
+                            testLever.OnOff = true;
+                        }
+                    }
+                    */
+                    testDoor.Collision(player);
 
-                isColliding = testContainer.CheckCollision(player);
-                if(isColliding && SingleKeyPress(Keys.E))
-                {
-                    testContainer.OnOff = true;
-                }
+                    bool isColliding = testContainer.CheckCollision(player);
+                    if (isColliding && SingleKeyPress(Keys.E) && waterRoom.WaterContainer1.OnOff == false && waterRoom.WaterContainer2.OnOff == false)
+                    {
+                        testContainer.OnOff = true;
+                    }
 
-                if(testContainer.OnOff == true && SingleKeyPress(Keys.Q))
-                {
-                    testContainer.OnOff = false;
-                }
+                    if (testContainer.OnOff == true && SingleKeyPress(Keys.Q))
+                    {
+                        testContainer.OnOff = false;
+                    }
 
-                testContainer.Update(gameTime, player);
-                testSprite.Update(gameTime);
+                    bool isColliding1 = waterRoom.WaterContainer1.CheckCollision(player);
+                    if (isColliding1 && SingleKeyPress(Keys.E) && waterRoom.WaterContainer2.OnOff == false && testContainer.OnOff == false)
+                    {
+                        waterRoom.WaterContainer1.OnOff = true;
+                        if (waterRoom.WaterContainer1.CheckCollision(waterRoom.Sink) && SingleKeyPress(Keys.E))
+                        {
+                            waterRoom.Fill();
+                        }
+                        else if (waterRoom.WaterContainer1.CheckCollision(waterRoom.FinalContainer) && SingleKeyPress(Keys.E))
+                        {
+                            waterRoom.FinalContainerCondition();
+                        }
+                    }
 
-               /*if(time =< 0)
-                {
-                    gameState = GameState.GameOver;
-                }*/
+                    if (waterRoom.WaterContainer1.OnOff == true && SingleKeyPress(Keys.Q))
+                    {
+                        waterRoom.WaterContainer1.OnOff = false;
+                    }
+
+                    bool isColliding2 = waterRoom.WaterContainer2.CheckCollision(player);
+                    if (isColliding2 && SingleKeyPress(Keys.E) && waterRoom.WaterContainer1.OnOff == false && testContainer.OnOff == false)
+                    {
+                        waterRoom.WaterContainer2.OnOff = true;
+                        if (waterRoom.WaterContainer2.CheckCollision(waterRoom.Sink) && SingleKeyPress(Keys.E))
+                        {
+                            waterRoom.Fill();
+                        }
+
+                        else if(waterRoom.WaterContainer2.CheckCollision(waterRoom.FinalContainer) && SingleKeyPress(Keys.E))
+                        {
+                            waterRoom.FinalContainerCondition();
+                        }
+                    }
+
+                    if (waterRoom.WaterContainer2.OnOff == true && SingleKeyPress(Keys.Q))
+                    {
+                        waterRoom.WaterContainer2.OnOff = false;
+                    }
+
+                    if (waterRoom.Complete)
+                    {
+                        testDoor.OpenDoor(true);
+                        
+                    }
+                    
+                    testContainer.Update(gameTime, player);
+                    waterRoom.WaterContainer1.Update(gameTime, player);
+                    waterRoom.WaterContainer2.Update(gameTime, player);
+                    testSprite.Update(gameTime);
+
+                    /*if(time =< 0)
+                     {
+                         gameState = GameState.GameOver;
+                     }*/
 
                     /*if()
                     {
                         NextLevel();
                     }*/
 
-            }
-
-            else if(gameState == GameState.InGameMenu)
-            {
-                if (SingleKeyPress(Keys.P))
-                {
-                    gameState = GameState.Game;
                 }
-            }
 
-            else
-            {
-                if (SingleKeyPress(Keys.Enter))
+                else if (gameState == GameState.InGameMenu)
                 {
-                    gameState = GameState.Menu;
-                    
+                    if (SingleKeyPress(Keys.P))
+                    {
+                        gameState = GameState.Game;
+                    }
                 }
+
+                else
+                {
+                    if (SingleKeyPress(Keys.Enter))
+                    {
+                        gameState = GameState.Menu;
+
+                    }
+                }
+
+                // stores old keyboard state for check
+                previousKbState = kbState;
+
+                base.Update(gameTime);
             }
 
-            // stores old keyboard state for check
-            previousKbState = kbState;
+            else if (roomState == RoomEnum.Room2)
+            {
+                if (gameState == GameState.Menu)
+                {
 
-            base.Update(gameTime);
+                    if (SingleKeyPress(Keys.Enter))
+                    {
+
+                        gameState = GameState.Game;
+                        ResetGame();
+                    }
+                }
+
+                else if (gameState == GameState.Game)
+                {
+
+                    player.Move(kbState); //Made a move method so that we're not looking at a massive if statement - Michael
+                                          //time -= gameTime.ElapsedGameTime.TotalSeconds;
+
+                    // if statements to check if each of the movement keys are being pressed
+
+
+                    ScreenWrap(player);
+
+                    if (SingleKeyPress(Keys.P))
+                    {
+                        gameState = GameState.InGameMenu;
+                    }
+
+                    bool isColliding = lightswitch.CheckCollision(player);
+                    if (isColliding == true && SingleKeyPress(Keys.E) && lightswitch.OnOff == false)
+                    {
+                        lightswitch.OnOff = true;
+                    }
+                    else if (isColliding == true && SingleKeyPress(Keys.E) && lightswitch.OnOff == true)
+                    {
+                        lightswitch.OnOff = false;
+                    }
+
+                    isColliding = testLever.CheckCollision(player);
+                    if (isColliding == true && SingleKeyPress(Keys.E))
+                    {
+                        testLever.StateChanged();
+                        if (testLever.OnOff == true)
+                        {
+                            testLever.OnOff = false;
+                        }
+                        else
+                        {
+                            testLever.OnOff = true;
+                        }
+                    }
+
+                    testDoor.Collision(player);
+
+                    isColliding = testContainer.CheckCollision(player);
+                    if (isColliding && SingleKeyPress(Keys.E))
+                    {
+                        testContainer.OnOff = true;
+                    }
+
+                    if (testContainer.OnOff == true && SingleKeyPress(Keys.Q))
+                    {
+                        testContainer.OnOff = false;
+                    }
+
+                    testContainer.Update(gameTime, player);
+                    testSprite.Update(gameTime);
+
+                    /*if(time =< 0)
+                     {
+                         gameState = GameState.GameOver;
+                     }*/
+
+                    /*if()
+                    {
+                        NextLevel();
+                    }*/
+
+                }
+
+                else if (gameState == GameState.InGameMenu)
+                {
+                    if (SingleKeyPress(Keys.P))
+                    {
+                        gameState = GameState.Game;
+                    }
+                }
+
+                else
+                {
+                    if (SingleKeyPress(Keys.Enter))
+                    {
+                        gameState = GameState.Menu;
+
+                    }
+                }
+
+                // stores old keyboard state for check
+                previousKbState = kbState;
+
+                base.Update(gameTime);
+            }
         }
 
         /// <summary>
@@ -254,70 +419,86 @@ namespace Puzzle07
             cursor.Draw(spriteBatch);
 
             // check game state and draw what is needed in each
-            if (gameState == GameState.Menu)
+            if (roomState == RoomEnum.Room1)
             {
-                //spriteBatch.DrawString(font, "Puzzle07", new Vector2(350f, 200f), Color.Black);
-                spriteBatch.DrawString(font, "Press Enter to continue, move with WASD, interact with E, and P to pause", new Vector2(50, 400f), Color.Black, 0, new Vector2(0,0), (float).8, SpriteEffects.None, 0);
-                spriteBatch.Draw(buttonTexture, new Rectangle(GraphicsDevice.Viewport.Width / 2 - 100, GraphicsDevice.Viewport.Height / 2 - 100, 200, 100), Color.White);  //Start Button
-                spriteBatch.Draw(buttonTexture, new Rectangle(GraphicsDevice.Viewport.Width / 2 - 100, GraphicsDevice.Viewport.Height / 2 + 25, 200, 100), Color.White);   //Exit Button
-                spriteBatch.Draw(menuTitle, new Rectangle(GraphicsDevice.Viewport.Width / 2 - 250, 25, 500, 100), Color.White);            //Title
-            }
-
-            else if (gameState == GameState.Game)
-            {
-                lightswitch.Draw(spriteBatch);
-                if(lightswitch.OnOff == true)
+                if (gameState == GameState.Menu)
                 {
-                    GraphicsDevice.Clear(Color.Black);
+                    //spriteBatch.DrawString(font, "Puzzle07", new Vector2(350f, 200f), Color.Black);
+                    spriteBatch.DrawString(font, "Press Enter to continue, move with WASD, interact with E, and P to pause", new Vector2(50, 400f), Color.Black, 0, new Vector2(0, 0), (float).8, SpriteEffects.None, 0);
+                    spriteBatch.Draw(buttonTexture, new Rectangle(GraphicsDevice.Viewport.Width / 2 - 100, GraphicsDevice.Viewport.Height / 2 - 100, 200, 100), Color.White);  //Start Button
+                    spriteBatch.Draw(buttonTexture, new Rectangle(GraphicsDevice.Viewport.Width / 2 - 100, GraphicsDevice.Viewport.Height / 2 + 25, 200, 100), Color.White);   //Exit Button
+                    spriteBatch.Draw(menuTitle, new Rectangle(GraphicsDevice.Viewport.Width / 2 - 250, 25, 500, 100), Color.White);            //Title
+                }
+
+                else if (gameState == GameState.Game)
+                {
+                    /*lightswitch.Draw(spriteBatch);
+                    if (lightswitch.OnOff == true)
+                    {
+                        GraphicsDevice.Clear(Color.Black);
+                    }
+                    else
+                    {
+                        GraphicsDevice.Clear(Color.CornflowerBlue);
+                    }
+                    */
+
+                    // draw code for water room
+                    spriteBatch.DrawString(font, waterRoom.WaterContainer1.Max.ToString(), new Vector2(700, 200), Color.Black);
+                    spriteBatch.DrawString(font, waterRoom.WaterContainer1.Amount.ToString(), new Vector2(700, 500), Color.Black);
+                    spriteBatch.DrawString(font, waterRoom.FinalContainer.Amount.ToString(), new Vector2(200, 500), Color.Black);
+                    spriteBatch.DrawString(font, waterRoom.FinalContainer.Max.ToString(), new Vector2(200, 700), Color.Black);
+                    waterRoom.Sink.Draw(spriteBatch);
+                    waterRoom.WaterContainer1.Draw(spriteBatch);
+                    waterRoom.WaterContainer2.Draw(spriteBatch);
+                    waterRoom.FinalContainer.Draw(spriteBatch);
+                    
+                    //To be commented out and removed
+                    spriteBatch.Draw(player.Texture, player.Position, Color.White);
+                    spriteBatch.Draw(testLever.Texture, testLever.Position, Color.White);
+                    spriteBatch.Draw(testDoor.Texture, testDoor.Position, Color.White);
+                    
+                    if (testDoor.IsOpen == true)
+                    {
+                        spriteBatch.DrawString(font, "Open", new Vector2(testDoor.X, testDoor.Y), Color.Black);
+                    }
+                    else if (testDoor.IsOpen == false)
+                    {
+                        spriteBatch.DrawString(font, "Closed", new Vector2(testDoor.X, testDoor.Y), Color.Black);
+                    }
+
+                    if (testLever.OnOff == true)
+                    {
+                        spriteBatch.DrawString(font, "On", new Vector2(testLever.X, testLever.Y), Color.Black);
+                    }
+                    else if (testLever.OnOff == false)
+                    {
+                        spriteBatch.DrawString(font, "Off", new Vector2(testLever.X, testLever.Y), Color.Black);
+                    }
+
+                    spriteBatch.Draw(player.Texture, player.Position, Color.White);
+
+                    testContainer.Draw(spriteBatch);
+
+                    testSprite.Draw(spriteBatch);
+
+                    //spriteBatch.DrawString(font, "Room: " + level, new Vector2(10, 10), Color.Black);
+                    //spriteBatch.DrawString(font, string.Format("Time: {0:0.00}", time), new Vector2(400, 10), Color.Black);
+
+
+                }
+
+                else if (gameState == GameState.InGameMenu)
+                {
+                    spriteBatch.DrawString(font, "Pause", new Vector2(250f, 10f), Color.Black);
                 }
                 else
                 {
-                    GraphicsDevice.Clear(Color.CornflowerBlue);
+                    spriteBatch.DrawString(font, "Game Over", new Vector2(250f, 10f), Color.Black);
+                    spriteBatch.DrawString(font, String.Format("{0:0.00}", level), new Vector2(250f, 100f), Color.Black);
+                    //spriteBatch.DrawString(font, String.Format("{0:0.00}", player.TotalScore), new Vector2(250f, 200f), Color.Black);
+                    spriteBatch.DrawString(font, "Press Enter to continue", new Vector2(250f, 400f), Color.Black);
                 }
-                //To be commented out and removed
-                spriteBatch.Draw(player.Texture, player.Position, Color.White);
-                spriteBatch.Draw(testLever.Texture, testLever.Position, Color.White);
-                spriteBatch.Draw(testDoor.Texture, testDoor.Position, Color.White);
-                if(testDoor.IsOpen == true)
-                {
-                    spriteBatch.DrawString(font, "Open", new Vector2(testDoor.X, testDoor.Y), Color.Black);
-                }
-                else if(testDoor.IsOpen == false)
-                {
-                    spriteBatch.DrawString(font, "Closed", new Vector2(testDoor.X, testDoor.Y), Color.Black);
-                }
-
-                if (testLever.OnOff == true)
-                {
-                    spriteBatch.DrawString(font, "On", new Vector2(testLever.X, testLever.Y), Color.Black);
-                }
-                else if (testLever.OnOff == false)
-                {
-                    spriteBatch.DrawString(font, "Off", new Vector2(testLever.X, testLever.Y), Color.Black);
-                }
-
-                spriteBatch.Draw(player.Texture, player.Position, Color.White);
-
-                testContainer.Draw(spriteBatch);
-
-                testSprite.Draw(spriteBatch);
-
-                //spriteBatch.DrawString(font, "Room: " + level, new Vector2(10, 10), Color.Black);
-                //spriteBatch.DrawString(font, string.Format("Time: {0:0.00}", time), new Vector2(400, 10), Color.Black);
-
-
-            }
-
-            else if(gameState == GameState.InGameMenu)
-            {
-                spriteBatch.DrawString(font, "Pause", new Vector2(250f, 10f), Color.Black);
-            }
-            else
-            {
-                spriteBatch.DrawString(font, "Game Over", new Vector2(250f, 10f), Color.Black);
-                spriteBatch.DrawString(font, String.Format("{0:0.00}", level), new Vector2(250f, 100f), Color.Black);
-                //spriteBatch.DrawString(font, String.Format("{0:0.00}", player.TotalScore), new Vector2(250f, 200f), Color.Black);
-                spriteBatch.DrawString(font, "Press Enter to continue", new Vector2(250f, 400f), Color.Black);
             }
             spriteBatch.End();
 
