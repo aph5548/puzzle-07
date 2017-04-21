@@ -69,6 +69,7 @@
     <Compile Include="Sprite.cs" />
     <Compile Include="Wall.cs" />
     <Compile Include="WaterContainer.cs" />
+    <Compile Include="WaterRoom.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="MonoGame.Framework">
