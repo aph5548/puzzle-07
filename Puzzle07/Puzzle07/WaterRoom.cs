@@ -72,13 +72,13 @@ namespace Puzzle07
 
             else if(waterContainer1.Amount == 0 && waterContainer1.OnOff && finalContainer.Amount != 0)
             {
-                waterContainer1.Amount = finalContainer.Amount - waterContainer1.Max;
+                waterContainer1.Amount = waterContainer1.Max;
                 finalContainer.Amount = finalContainer.Amount - waterContainer1.Max;
             }
 
             else if(waterContainer2.Amount == 0 && waterContainer2.OnOff && finalContainer.Amount != 0)
             {
-                waterContainer2.Amount = finalContainer.Amount - waterContainer2.Max;
+                waterContainer2.Amount = waterContainer2.Max;
                 finalContainer.Amount = finalContainer.Amount - waterContainer2.Max;
             }
 

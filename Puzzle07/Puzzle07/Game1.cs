@@ -444,6 +444,10 @@ namespace Puzzle07
                     */
 
                     // draw code for water room
+                    spriteBatch.DrawString(font, waterRoom.WaterContainer1.Max.ToString(), new Vector2(700, 200), Color.Black);
+                    spriteBatch.DrawString(font, waterRoom.WaterContainer1.Amount.ToString(), new Vector2(700, 500), Color.Black);
+                    spriteBatch.DrawString(font, waterRoom.FinalContainer.Amount.ToString(), new Vector2(200, 500), Color.Black);
+                    spriteBatch.DrawString(font, waterRoom.FinalContainer.Max.ToString(), new Vector2(200, 700), Color.Black);
                     waterRoom.Sink.Draw(spriteBatch);
                     waterRoom.WaterContainer1.Draw(spriteBatch);
                     waterRoom.WaterContainer2.Draw(spriteBatch);
