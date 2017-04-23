@@ -25,8 +25,6 @@ namespace Puzzle07
         Texture2D sprite;
         Texture2D objectSprite1;
         Texture2D interSprite1;
-        Texture2D buttonTexture;
-        Texture2D menuTitle;
         Texture2D spriteSheet;
         SpriteFont font;
         Player player;
@@ -39,6 +37,8 @@ namespace Puzzle07
         Cursor cursor;
         WaterContainer testContainer;
         Sprite testSprite;
+        Button start;
+        Button quit;
         //double time;
         
         
@@ -86,7 +86,10 @@ namespace Puzzle07
             testSprite = new Puzzle07.Sprite(32, 32, 50, 8, new Vector2(100, 700));
             waterRoom = new WaterRoom(kbState, player, new Rectangle(0, 600, 128, 128), new Rectangle(100, 100, 128, 128), new Rectangle(600, 200, 64, 64), new Rectangle(750, 100, 64, 64), rngWater.Next(2, 7), rngWater.Next(2, 7));
             interact.Add(lightswitch);
-            
+            start = new Button();
+            start.Location = new Rectangle(50, 400, 500, 100);
+            quit = new Button();
+            quit.Location = new Rectangle(50, 520, 500, 100);
             base.Initialize();
         }
 
@@ -103,8 +106,6 @@ namespace Puzzle07
             sprite = Content.Load<Texture2D>("characterSprite");
             objectSprite1 = Content.Load<Texture2D>("enemySprite");
             interSprite1 = Content.Load<Texture2D>("enemySprite");
-            buttonTexture = Content.Load<Texture2D>("buttonTexture");
-            menuTitle = Content.Load<Texture2D>("menuTitle");
             font = Content.Load<SpriteFont>("mainFont");
             cup = Content.Load<Texture2D>("Cup");
             spriteSheet = Content.Load<Texture2D>("testSpriteSheet");
@@ -119,6 +120,8 @@ namespace Puzzle07
             waterRoom.Sink.Texture = interSprite1;
             waterRoom.FinalContainer.Texture = cup;
             testSprite.Image = spriteSheet;
+            start.Texture = Content.Load<Texture2D>("StartButton");
+            quit.Texture = Content.Load<Texture2D>("ExitButton");
         }
 
         /// <summary>
@@ -151,6 +154,7 @@ namespace Puzzle07
             // finite state machine checks
             if (roomState == RoomEnum.Room1)
             {
+<<<<<<< HEAD
                 if (gameState == GameState.Menu)
                 {
 
@@ -161,6 +165,20 @@ namespace Puzzle07
                         ResetGame();
                     }
                 }
+=======
+                //Check too see if the buttons are clicked or not
+
+                if (cursor.Position.Intersects(start.Location) && mouse.LeftButton == ButtonState.Pressed)
+                {
+                    gameState = GameState.Game; //start the game
+                    ResetGame();
+                }
+                if(cursor.Position.Intersects(quit.Location) && mouse.LeftButton == ButtonState.Pressed)
+                {
+                    Exit(); //Quit
+                }
+            }
+>>>>>>> 0165ac3ecb51a4e74c902099aa0dc4275ca821ac
 
                 else if (gameState == GameState.Game)
                 {
@@ -412,7 +430,7 @@ namespace Puzzle07
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Draw(GameTime gameTime)
         {
-            GraphicsDevice.Clear(Color.CornflowerBlue);
+            GraphicsDevice.Clear(Color.LightGray);
 
             // TODO: Add your drawing code here
             spriteBatch.Begin();
@@ -421,7 +439,45 @@ namespace Puzzle07
             // check game state and draw what is needed in each
             if (roomState == RoomEnum.Room1)
             {
+<<<<<<< HEAD
                 if (gameState == GameState.Menu)
+=======
+                //Draw each of the main menu buttons, if the mouse if hovering over them then tint them a different color
+
+                if (cursor.Position.Intersects(start.Location))
+                    spriteBatch.Draw(start.Texture, start.Location, Color.DarkGray);
+                else
+                    spriteBatch.Draw(start.Texture, start.Location, Color.White);
+
+                if (cursor.Position.Intersects(quit.Location))
+                    spriteBatch.Draw(quit.Texture, quit.Location, Color.DarkGray);
+                else
+                    spriteBatch.Draw(quit.Texture, quit.Location, Color.White);
+                spriteBatch.DrawString(font, "Puzzle07", new Vector2(50f, 100f), Color.Black);
+                //Title
+            }
+
+            else if (gameState == GameState.Game)
+            {
+                lightswitch.Draw(spriteBatch);
+                if(lightswitch.OnOff == true)
+                {
+                    GraphicsDevice.Clear(Color.Black);
+                }
+                else
+                {
+                    GraphicsDevice.Clear(Color.CornflowerBlue);
+                }
+                //To be commented out and removed
+                spriteBatch.Draw(player.Texture, player.Position, Color.White);
+                spriteBatch.Draw(testLever.Texture, testLever.Position, Color.White);
+                spriteBatch.Draw(testDoor.Texture, testDoor.Position, Color.White);
+                if(testDoor.IsOpen == true)
+                {
+                    spriteBatch.DrawString(font, "Open", new Vector2(testDoor.X, testDoor.Y), Color.Black);
+                }
+                else if(testDoor.IsOpen == false)
+>>>>>>> 0165ac3ecb51a4e74c902099aa0dc4275ca821ac
                 {
                     //spriteBatch.DrawString(font, "Puzzle07", new Vector2(350f, 200f), Color.Black);
                     spriteBatch.DrawString(font, "Press Enter to continue, move with WASD, interact with E, and P to pause", new Vector2(50, 400f), Color.Black, 0, new Vector2(0, 0), (float).8, SpriteEffects.None, 0);
