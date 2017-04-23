@@ -37,6 +37,12 @@ namespace Puzzle07
             set { isComplete = value; }
         }
 
+        public Player Player1
+        {
+            get { return Player1; }
+        }
+
+
         //Update method: Handles any relevant updates:
         public void Update(GameTime gameTime)
         {
