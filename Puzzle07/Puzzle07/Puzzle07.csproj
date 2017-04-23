@@ -53,6 +53,7 @@
     <ApplicationIcon>Icon.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Button.cs" />
     <Compile Include="Cursor.cs" />
     <Compile Include="Door.cs" />
     <Compile Include="FailTile.cs" />
