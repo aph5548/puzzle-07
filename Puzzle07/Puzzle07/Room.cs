@@ -44,7 +44,7 @@ namespace Puzzle07
         }
 
         //Generic draw method
-        public void Draw(SpriteBatch spriteBatch)
+        public virtual void Draw(SpriteBatch spriteBatch)
         {
             player.Draw(spriteBatch);
         }
