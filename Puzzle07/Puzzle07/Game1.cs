@@ -468,7 +468,7 @@ namespace Puzzle07
 
             // TODO: Add your drawing code here
             spriteBatch.Begin();
-            cursor.Draw(spriteBatch);
+            
 
             // check game state and draw what is needed in each
             if (roomState == RoomEnum.Room1)
@@ -547,6 +547,9 @@ namespace Puzzle07
                     spriteBatch.DrawString(font, "Press Enter to continue", new Vector2(250f, 400f), Color.Black);
                 }
             }
+
+            cursor.Draw(spriteBatch);
+
             spriteBatch.End();
 
             base.Draw(gameTime);
