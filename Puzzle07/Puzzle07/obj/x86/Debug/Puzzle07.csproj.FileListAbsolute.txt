@@ -116,9 +116,6 @@ C:\Users\flame\Desktop\Puzzle07Git\Puzzle07\Puzzle07\bin\Windows\x86\Debug\Sharp
 C:\Users\flame\Desktop\Puzzle07Git\Puzzle07\Puzzle07\obj\x86\Debug\Puzzle07.csprojResolveAssemblyReference.cache
 C:\Users\flame\Desktop\Puzzle07Git\Puzzle07\Puzzle07\bin\Windows\x86\Debug\Content\Cup.png
 C:\Users\flame\Desktop\Puzzle07Git\Puzzle07\Puzzle07\bin\Windows\x86\Debug\Content\testSpriteSheet.png
-<<<<<<< HEAD
-=======
->>>>>>> 4c77a2e07f17bcce9ce7c891a3531c2948c06c9c
 C:\Users\kaliboss\Desktop\Puzzle07\Puzzle07\obj\x86\Debug\Puzzle07.exe
 C:\Users\kaliboss\Desktop\Puzzle07\Puzzle07\obj\x86\Debug\Puzzle07.pdb
 C:\Users\kaliboss\Desktop\Puzzle07\Puzzle07\bin\Windows\x86\Debug\Content\buttonTexture.png
@@ -151,11 +148,6 @@ C:\Users\kaliboss\Desktop\Puzzle07\Puzzle07\bin\Windows\x86\Debug\SharpDX.XInput
 C:\Users\kaliboss\Desktop\Puzzle07\Puzzle07\bin\Windows\x86\Debug\SharpDX.RawInput.xml
 C:\Users\kaliboss\Desktop\Puzzle07\Puzzle07\bin\Windows\x86\Debug\SharpDX.Direct3D9.xml
 C:\Users\kaliboss\Desktop\Puzzle07\Puzzle07\obj\x86\Debug\Puzzle07.csprojResolveAssemblyReference.cache
-C:\Users\Derek\Documents\School\Puzzle07\Puzzle07\Puzzle07\bin\Windows\x86\Debug\Content\Cup.png
-C:\Users\Derek\Documents\School\Puzzle07\Puzzle07\Puzzle07\bin\Windows\x86\Debug\Content\testSpriteSheet.png
-C:\Users\Derek\Documents\School\Puzzle07\Puzzle07\Puzzle07\bin\Windows\x86\Debug\Content\StartButton.png
-C:\Users\Derek\Documents\School\Puzzle07\Puzzle07\Puzzle07\bin\Windows\x86\Debug\Content\ExitButton.png
->>>>>>> 0165ac3ecb51a4e74c902099aa0dc4275ca821ac
 C:\Users\kaliboss\Desktop\Puzzle07\Puzzle07\bin\Windows\x86\Debug\Content\Drain.png
 C:\Users\kaliboss\Desktop\Puzzle07\Puzzle07\bin\Windows\x86\Debug\Content\PlayerSprite.png
 C:\Users\kaliboss\Desktop\Puzzle07\Puzzle07\bin\Windows\x86\Debug\Content\Wall.png
@@ -165,3 +157,5 @@ C:\Users\kaliboss\Desktop\Puzzle07\Puzzle07\bin\Windows\x86\Debug\Content\Door.p
 C:\Users\kaliboss\Desktop\Puzzle07\Puzzle07\bin\Windows\x86\Debug\Content\Sink.png
 C:\Users\kaliboss\Desktop\Puzzle07\Puzzle07\bin\Windows\x86\Debug\Content\WallVertical.png
 C:\Users\kaliboss\Desktop\Puzzle07\Puzzle07\bin\Windows\x86\Debug\Content\FloorTileBlank.png
+C:\Users\kaliboss\Desktop\Puzzle07\Puzzle07\bin\Windows\x86\Debug\Content\ExitButton.png
+C:\Users\kaliboss\Desktop\Puzzle07\Puzzle07\bin\Windows\x86\Debug\Content\StartButton.png
