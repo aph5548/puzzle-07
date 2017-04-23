@@ -25,8 +25,6 @@ namespace Puzzle07
         Texture2D sprite;
         Texture2D objectSprite1;
         Texture2D interSprite1;
-        Texture2D buttonTexture;
-        Texture2D menuTitle;
         Texture2D spriteSheet;
         SpriteFont font;
         Player player;
@@ -39,6 +37,8 @@ namespace Puzzle07
         Cursor cursor;
         WaterContainer testContainer;
         Sprite testSprite;
+        Button start;
+        Button quit;
         //double time;
         
         
@@ -80,7 +80,10 @@ namespace Puzzle07
             testContainer = new WaterContainer(5, 0, 500, 500, 32, 32);
             testSprite = new Puzzle07.Sprite(32, 32, 50, 8, new Vector2(100, 700));
             interact.Add(lightswitch);
-            
+            start = new Button();
+            start.Location = new Rectangle(50, 400, 500, 100);
+            quit = new Button();
+            quit.Location = new Rectangle(50, 520, 500, 100);
             base.Initialize();
         }
 
@@ -97,8 +100,6 @@ namespace Puzzle07
             sprite = Content.Load<Texture2D>("characterSprite");
             objectSprite1 = Content.Load<Texture2D>("enemySprite");
             interSprite1 = Content.Load<Texture2D>("enemySprite");
-            buttonTexture = Content.Load<Texture2D>("buttonTexture");
-            menuTitle = Content.Load<Texture2D>("menuTitle");
             font = Content.Load<SpriteFont>("mainFont");
             cup = Content.Load<Texture2D>("Cup");
             spriteSheet = Content.Load<Texture2D>("testSpriteSheet");
@@ -109,6 +110,8 @@ namespace Puzzle07
             cursor.Texture = interSprite1;
             testContainer.Texture = cup;
             testSprite.Image = spriteSheet;
+            start.Texture = Content.Load<Texture2D>("StartButton");
+            quit.Texture = Content.Load<Texture2D>("ExitButton");
         }
 
         /// <summary>
@@ -142,11 +145,14 @@ namespace Puzzle07
             if (gameState == GameState.Menu)
             {
                 
-                if (SingleKeyPress(Keys.Enter))
+                if (cursor.Position.Intersects(start.Location) && mouse.LeftButton == ButtonState.Pressed)
                 {
-                    
                     gameState = GameState.Game;
                     ResetGame();
+                }
+                if(cursor.Position.Intersects(quit.Location) && mouse.LeftButton == ButtonState.Pressed)
+                {
+                    Exit();
                 }
             }
 
@@ -247,7 +253,7 @@ namespace Puzzle07
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Draw(GameTime gameTime)
         {
-            GraphicsDevice.Clear(Color.CornflowerBlue);
+            GraphicsDevice.Clear(Color.LightGray);
 
             // TODO: Add your drawing code here
             spriteBatch.Begin();
@@ -256,11 +262,17 @@ namespace Puzzle07
             // check game state and draw what is needed in each
             if (gameState == GameState.Menu)
             {
-                //spriteBatch.DrawString(font, "Puzzle07", new Vector2(350f, 200f), Color.Black);
-                spriteBatch.DrawString(font, "Press Enter to continue, move with WASD, interact with E, and P to pause", new Vector2(50, 400f), Color.Black, 0, new Vector2(0,0), (float).8, SpriteEffects.None, 0);
-                spriteBatch.Draw(buttonTexture, new Rectangle(GraphicsDevice.Viewport.Width / 2 - 100, GraphicsDevice.Viewport.Height / 2 - 100, 200, 100), Color.White);  //Start Button
-                spriteBatch.Draw(buttonTexture, new Rectangle(GraphicsDevice.Viewport.Width / 2 - 100, GraphicsDevice.Viewport.Height / 2 + 25, 200, 100), Color.White);   //Exit Button
-                spriteBatch.Draw(menuTitle, new Rectangle(GraphicsDevice.Viewport.Width / 2 - 250, 25, 500, 100), Color.White);            //Title
+                if(cursor.Position.Intersects(start.Location))
+                    spriteBatch.Draw(start.Texture, start.Location, Color.DarkGray);
+                else
+                    spriteBatch.Draw(start.Texture, start.Location, Color.White);
+
+                if (cursor.Position.Intersects(quit.Location))
+                    spriteBatch.Draw(quit.Texture, quit.Location, Color.DarkGray);
+                else
+                    spriteBatch.Draw(quit.Texture, quit.Location, Color.White);
+                spriteBatch.DrawString(font, "Puzzle07", new Vector2(50f, 100f), Color.Black);
+                //Title
             }
 
             else if (gameState == GameState.Game)
