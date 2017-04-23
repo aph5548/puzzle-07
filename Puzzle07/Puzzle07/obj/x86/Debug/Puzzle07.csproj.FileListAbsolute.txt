@@ -148,3 +148,12 @@ C:\Users\kaliboss\Desktop\Puzzle07\Puzzle07\bin\Windows\x86\Debug\SharpDX.XInput
 C:\Users\kaliboss\Desktop\Puzzle07\Puzzle07\bin\Windows\x86\Debug\SharpDX.RawInput.xml
 C:\Users\kaliboss\Desktop\Puzzle07\Puzzle07\bin\Windows\x86\Debug\SharpDX.Direct3D9.xml
 C:\Users\kaliboss\Desktop\Puzzle07\Puzzle07\obj\x86\Debug\Puzzle07.csprojResolveAssemblyReference.cache
+C:\Users\kaliboss\Desktop\Puzzle07\Puzzle07\bin\Windows\x86\Debug\Content\Drain.png
+C:\Users\kaliboss\Desktop\Puzzle07\Puzzle07\bin\Windows\x86\Debug\Content\PlayerSprite.png
+C:\Users\kaliboss\Desktop\Puzzle07\Puzzle07\bin\Windows\x86\Debug\Content\Wall.png
+C:\Users\kaliboss\Desktop\Puzzle07\Puzzle07\bin\Windows\x86\Debug\Content\WaterJugLarge.png
+C:\Users\kaliboss\Desktop\Puzzle07\Puzzle07\bin\Windows\x86\Debug\Content\WaterJugSmall.png
+C:\Users\kaliboss\Desktop\Puzzle07\Puzzle07\bin\Windows\x86\Debug\Content\Door.png
+C:\Users\kaliboss\Desktop\Puzzle07\Puzzle07\bin\Windows\x86\Debug\Content\Sink.png
+C:\Users\kaliboss\Desktop\Puzzle07\Puzzle07\bin\Windows\x86\Debug\Content\WallVertical.png
+C:\Users\kaliboss\Desktop\Puzzle07\Puzzle07\bin\Windows\x86\Debug\Content\FloorTileBlank.png

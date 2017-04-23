@@ -21,7 +21,14 @@ namespace Puzzle07
     {
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
-        Texture2D cup;
+        Texture2D floorTex;
+        Texture2D cupSmall;
+        Texture2D cupLarge;
+        Texture2D sinkTex;
+        Texture2D drainTex;
+        Texture2D doorTex;
+        Texture2D wallTex;
+        Texture2D vertWallTex;
         Texture2D sprite;
         Texture2D objectSprite1;
         Texture2D interSprite1;
@@ -37,8 +44,14 @@ namespace Puzzle07
         Lever testLever;
         Door testDoor;
         Cursor cursor;
-        WaterContainer testContainer;
+        RoomExit exit;
+      
         Sprite testSprite;
+        Wall wall1; // left wall
+        Wall wall2; // right wall
+        Wall wall3; // bottom wall
+        Wall wall4; // wall left of door
+        Wall wall5; // wall right of door
         //double time;
         
         
@@ -75,16 +88,22 @@ namespace Puzzle07
             rngWater = new Random();
             gameState = GameState.Menu;
             roomState = RoomEnum.Room1;
+            wall1 = new Wall(-10, 0, 20, 1024);
+            wall2 = new Wall(1270, 0, 20, 1024);
+            wall3 = new Wall(0, 1014, 1280, 20);
+            wall4 = new Wall(0, 0, 448, 20);
+            wall5 = new Wall(576, 0, 700, 20);
+            exit = new RoomExit(448, -50, 128, 128);
             interact = new List<Interactable>();
             lightswitch = new Interactable(200, 200, 100, 100);
             kbState = Keyboard.GetState();
-            this.IsMouseVisible = true  ;
-            testDoor = new Door(400, 200, 128, 128);
+            this.IsMouseVisible = false;
+            testDoor = new Door(448, -50, 128, 128);
             testLever = new Puzzle07.Lever(testDoor, 300, 300, 32, 32);
             cursor = new Cursor(0, 0, 16, 16);
-            testContainer = new WaterContainer(5, 0, 500, 500, 32, 32);
+           
             testSprite = new Puzzle07.Sprite(32, 32, 50, 8, new Vector2(100, 700));
-            waterRoom = new WaterRoom(kbState, player, new Rectangle(0, 600, 128, 128), new Rectangle(100, 100, 128, 128), new Rectangle(600, 200, 64, 64), new Rectangle(750, 100, 64, 64), rngWater.Next(2, 7), rngWater.Next(2, 7));
+            waterRoom = new WaterRoom(kbState, player, new Rectangle(50, 600, 128, 128), new Rectangle(100, 100, 128, 128), new Rectangle(700, 100, 64, 64), new Rectangle(800, 100, 64, 64), rngWater.Next(2, 7), rngWater.Next(2, 7), new Rectangle(500, 700, 64, 64));
             interact.Add(lightswitch);
             
             base.Initialize();
@@ -100,25 +119,38 @@ namespace Puzzle07
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
             // TODO: use this.Content to load your game content here
-            sprite = Content.Load<Texture2D>("characterSprite");
+            sprite = Content.Load<Texture2D>("PlayerSprite");
             objectSprite1 = Content.Load<Texture2D>("enemySprite");
             interSprite1 = Content.Load<Texture2D>("enemySprite");
             buttonTexture = Content.Load<Texture2D>("buttonTexture");
             menuTitle = Content.Load<Texture2D>("menuTitle");
             font = Content.Load<SpriteFont>("mainFont");
-            cup = Content.Load<Texture2D>("Cup");
-            spriteSheet = Content.Load<Texture2D>("testSpriteSheet");
+            cupSmall = Content.Load<Texture2D>("WaterJugSmall");
+            cupLarge = Content.Load<Texture2D>("WaterJugLarge");
+            drainTex = Content.Load<Texture2D>("Drain");
+            wallTex = Content.Load<Texture2D>("Wall");
+            vertWallTex = Content.Load<Texture2D>("WallVertical");
+            doorTex = Content.Load<Texture2D>("Door");
+            sinkTex = Content.Load<Texture2D>("Sink");
+            floorTex = Content.Load<Texture2D>("FloorTileBlank");
+            //spriteSheet = Content.Load<Texture2D>("testSpriteSheet");
             player.Texture = sprite;
             lightswitch.Texture = interSprite1;
             testLever.Texture = interSprite1;
-            testDoor.Texture = interSprite1;
+            testDoor.Texture = doorTex;
             cursor.Texture = interSprite1;
-            testContainer.Texture = cup;
-            waterRoom.WaterContainer1.Texture = cup;
-            waterRoom.WaterContainer2.Texture = cup;
-            waterRoom.Sink.Texture = interSprite1;
-            waterRoom.FinalContainer.Texture = cup;
-            testSprite.Image = spriteSheet;
+            
+            wall1.Texture = vertWallTex;
+            wall2.Texture = vertWallTex;
+            wall3.Texture = wallTex;
+            wall4.Texture = wallTex;
+            wall5.Texture = wallTex;
+            waterRoom.WaterContainer1.Texture = cupSmall;
+            waterRoom.WaterContainer2.Texture = cupSmall;
+            waterRoom.Sink.Texture = sinkTex;
+            waterRoom.Drain.Texture = drainTex;
+            waterRoom.FinalContainer.Texture = cupLarge;
+            //testSprite.Image = spriteSheet;
         }
 
         /// <summary>
@@ -177,9 +209,13 @@ namespace Puzzle07
                     {
                         gameState = GameState.InGameMenu;
                     }
+                    if (SingleKeyPress(Keys.B))
+                    {
+                        gameState = GameState.GameOver;
+                    }
 
-                    //bool isColliding = lightswitch.CheckCollision(player);
-                    /*
+                    /*bool isColliding = lightswitch.CheckCollision(player);
+                    
                     if (isColliding == true && SingleKeyPress(Keys.E) && lightswitch.OnOff == false) // kept this code here just in case anyone wanted to reuse it - Austin
                     {
                         lightswitch.OnOff = true;
@@ -205,29 +241,26 @@ namespace Puzzle07
                     */
                     testDoor.Collision(player);
 
-                    bool isColliding = testContainer.CheckCollision(player);
-                    if (isColliding && SingleKeyPress(Keys.E) && waterRoom.WaterContainer1.OnOff == false && waterRoom.WaterContainer2.OnOff == false)
-                    {
-                        testContainer.OnOff = true;
-                    }
-
-                    if (testContainer.OnOff == true && SingleKeyPress(Keys.Q))
-                    {
-                        testContainer.OnOff = false;
-                    }
+                   
 
                     bool isColliding1 = waterRoom.WaterContainer1.CheckCollision(player);
-                    if (isColliding1 && SingleKeyPress(Keys.E) && waterRoom.WaterContainer2.OnOff == false && testContainer.OnOff == false)
+                    if (isColliding1 && SingleKeyPress(Keys.E) && waterRoom.WaterContainer2.OnOff == false)
                     {
                         waterRoom.WaterContainer1.OnOff = true;
-                        if (waterRoom.WaterContainer1.CheckCollision(waterRoom.Sink) && SingleKeyPress(Keys.E))
-                        {
-                            waterRoom.Fill();
-                        }
-                        else if (waterRoom.WaterContainer1.CheckCollision(waterRoom.FinalContainer) && SingleKeyPress(Keys.E))
-                        {
-                            waterRoom.FinalContainerCondition();
-                        }
+                        
+                    }
+                    if (waterRoom.WaterContainer1.CheckCollision(waterRoom.Sink) && SingleKeyPress(Keys.E))
+                    {
+                        waterRoom.Fill();
+                    }
+                    else if (waterRoom.WaterContainer1.CheckCollision(waterRoom.FinalContainer) && SingleKeyPress(Keys.E))
+                    {
+                        waterRoom.FinalContainerCondition();
+                    }
+
+                    else if (waterRoom.WaterContainer1.CheckCollision(waterRoom.Drain) && SingleKeyPress(Keys.E))
+                    {
+                        waterRoom.DrainCup();
                     }
 
                     if (waterRoom.WaterContainer1.OnOff == true && SingleKeyPress(Keys.Q))
@@ -236,18 +269,25 @@ namespace Puzzle07
                     }
 
                     bool isColliding2 = waterRoom.WaterContainer2.CheckCollision(player);
-                    if (isColliding2 && SingleKeyPress(Keys.E) && waterRoom.WaterContainer1.OnOff == false && testContainer.OnOff == false)
+                    if (isColliding2 && SingleKeyPress(Keys.E) && waterRoom.WaterContainer1.OnOff == false)
                     {
                         waterRoom.WaterContainer2.OnOff = true;
-                        if (waterRoom.WaterContainer2.CheckCollision(waterRoom.Sink) && SingleKeyPress(Keys.E))
-                        {
-                            waterRoom.Fill();
-                        }
+                        
+                    }
 
-                        else if(waterRoom.WaterContainer2.CheckCollision(waterRoom.FinalContainer) && SingleKeyPress(Keys.E))
-                        {
-                            waterRoom.FinalContainerCondition();
-                        }
+                    if (waterRoom.WaterContainer2.CheckCollision(waterRoom.Sink) && SingleKeyPress(Keys.E))
+                    {
+                        waterRoom.Fill();
+                    }
+
+                    else if (waterRoom.WaterContainer2.CheckCollision(waterRoom.FinalContainer) && SingleKeyPress(Keys.E))
+                    {
+                        waterRoom.FinalContainerCondition();
+                    }
+
+                    else if (waterRoom.WaterContainer2.CheckCollision(waterRoom.Drain) && SingleKeyPress(Keys.E))
+                    {
+                        waterRoom.DrainCup();
                     }
 
                     if (waterRoom.WaterContainer2.OnOff == true && SingleKeyPress(Keys.Q))
@@ -258,13 +298,22 @@ namespace Puzzle07
                     if (waterRoom.Complete)
                     {
                         testDoor.OpenDoor(true);
+                        if (exit.ChangeRoom(player, waterRoom.Complete))
+                        {
+                            roomState = RoomEnum.Room2;
+                        }
                         
                     }
                     
-                    testContainer.Update(gameTime, player);
+                
                     waterRoom.WaterContainer1.Update(gameTime, player);
                     waterRoom.WaterContainer2.Update(gameTime, player);
-                    testSprite.Update(gameTime);
+                    wall1.Update(player);
+                    wall2.Update(player);
+                    wall3.Update(player);
+                    wall4.Update(player);
+                    wall5.Update(player);
+                    //testSprite.Update(gameTime);
 
                     /*if(time =< 0)
                      {
@@ -356,19 +405,8 @@ namespace Puzzle07
 
                     testDoor.Collision(player);
 
-                    isColliding = testContainer.CheckCollision(player);
-                    if (isColliding && SingleKeyPress(Keys.E))
-                    {
-                        testContainer.OnOff = true;
-                    }
-
-                    if (testContainer.OnOff == true && SingleKeyPress(Keys.Q))
-                    {
-                        testContainer.OnOff = false;
-                    }
-
-                    testContainer.Update(gameTime, player);
-                    testSprite.Update(gameTime);
+                    
+                    //testSprite.Update(gameTime);
 
                     /*if(time =< 0)
                      {
@@ -432,30 +470,25 @@ namespace Puzzle07
 
                 else if (gameState == GameState.Game)
                 {
-                    /*lightswitch.Draw(spriteBatch);
-                    if (lightswitch.OnOff == true)
-                    {
-                        GraphicsDevice.Clear(Color.Black);
-                    }
-                    else
-                    {
-                        GraphicsDevice.Clear(Color.CornflowerBlue);
-                    }
-                    */
-
+                    // wall and floor draw code 
+                    wall1.Draw(spriteBatch);
+                    wall2.Draw(spriteBatch);
+                    wall3.Draw(spriteBatch);
+                    wall4.Draw(spriteBatch);
+                    wall5.Draw(spriteBatch);
+                    spriteBatch.Draw(floorTex, new Rectangle(0, 0, 1280, 1024), Color.White);
+                    
                     // draw code for water room
-                    spriteBatch.DrawString(font, waterRoom.WaterContainer1.Max.ToString(), new Vector2(700, 200), Color.Black);
-                    spriteBatch.DrawString(font, waterRoom.WaterContainer1.Amount.ToString(), new Vector2(700, 500), Color.Black);
-                    spriteBatch.DrawString(font, waterRoom.FinalContainer.Amount.ToString(), new Vector2(200, 500), Color.Black);
-                    spriteBatch.DrawString(font, waterRoom.FinalContainer.Max.ToString(), new Vector2(200, 700), Color.Black);
+                    spriteBatch.DrawString(font, "Current: " + waterRoom.FinalContainer.Amount.ToString(), new Vector2(50, 80), Color.Black);
+                    spriteBatch.DrawString(font, "Max: " + waterRoom.FinalContainer.Max.ToString(), new Vector2(200, 80), Color.Black);
+                    
                     waterRoom.Sink.Draw(spriteBatch);
                     waterRoom.WaterContainer1.Draw(spriteBatch);
                     waterRoom.WaterContainer2.Draw(spriteBatch);
                     waterRoom.FinalContainer.Draw(spriteBatch);
+                    waterRoom.Drain.Draw(spriteBatch);
                     
-                    //To be commented out and removed
-                    spriteBatch.Draw(player.Texture, player.Position, Color.White);
-                    spriteBatch.Draw(testLever.Texture, testLever.Position, Color.White);
+                    
                     spriteBatch.Draw(testDoor.Texture, testDoor.Position, Color.White);
                     
                     if (testDoor.IsOpen == true)
@@ -467,20 +500,12 @@ namespace Puzzle07
                         spriteBatch.DrawString(font, "Closed", new Vector2(testDoor.X, testDoor.Y), Color.Black);
                     }
 
-                    if (testLever.OnOff == true)
-                    {
-                        spriteBatch.DrawString(font, "On", new Vector2(testLever.X, testLever.Y), Color.Black);
-                    }
-                    else if (testLever.OnOff == false)
-                    {
-                        spriteBatch.DrawString(font, "Off", new Vector2(testLever.X, testLever.Y), Color.Black);
-                    }
 
                     spriteBatch.Draw(player.Texture, player.Position, Color.White);
 
-                    testContainer.Draw(spriteBatch);
+                   
 
-                    testSprite.Draw(spriteBatch);
+                    //testSprite.Draw(spriteBatch);
 
                     //spriteBatch.DrawString(font, "Room: " + level, new Vector2(10, 10), Color.Black);
                     //spriteBatch.DrawString(font, string.Format("Time: {0:0.00}", time), new Vector2(400, 10), Color.Black);
