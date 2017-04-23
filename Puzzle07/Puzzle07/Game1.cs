@@ -144,15 +144,16 @@ namespace Puzzle07
             // finite state machine checks
             if (gameState == GameState.Menu)
             {
-                
+                //Check too see if the buttons are clicked or not
+
                 if (cursor.Position.Intersects(start.Location) && mouse.LeftButton == ButtonState.Pressed)
                 {
-                    gameState = GameState.Game;
+                    gameState = GameState.Game; //start the game
                     ResetGame();
                 }
                 if(cursor.Position.Intersects(quit.Location) && mouse.LeftButton == ButtonState.Pressed)
                 {
-                    Exit();
+                    Exit(); //Quit
                 }
             }
 
@@ -262,7 +263,9 @@ namespace Puzzle07
             // check game state and draw what is needed in each
             if (gameState == GameState.Menu)
             {
-                if(cursor.Position.Intersects(start.Location))
+                //Draw each of the main menu buttons, if the mouse if hovering over them then tint them a different color
+
+                if (cursor.Position.Intersects(start.Location))
                     spriteBatch.Draw(start.Texture, start.Location, Color.DarkGray);
                 else
                     spriteBatch.Draw(start.Texture, start.Location, Color.White);
