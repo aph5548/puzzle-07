@@ -1,8 +1,12 @@
-﻿using Microsoft.Xna.Framework;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
-using System;
-using System.Collections.Generic;
+using System.IO;
 /*
  * Austin Stone
  * Section 2
@@ -109,7 +113,10 @@ namespace Puzzle07
             testSprite = new Puzzle07.Sprite(32, 32, 50, 8, new Vector2(100, 700));
             waterRoom = new WaterRoom(kbState, player, new Rectangle(50, 600, 128, 128), new Rectangle(100, 100, 128, 128), new Rectangle(700, 100, 64, 64), new Rectangle(800, 100, 64, 64), rngWater.Next(2, 7), rngWater.Next(2, 7), new Rectangle(500, 700, 64, 64));
             interact.Add(lightswitch);
-            
+
+            ReadFile();
+
+
             base.Initialize();
         }
 
@@ -621,6 +628,28 @@ namespace Puzzle07
             else
             {
                 return false;
+            }
+        }
+
+        //Reads in the file from the tool and prints it to the console.
+        public void ReadFile()
+        {
+            StreamReader input;
+            try
+            {
+                string[] debug = Directory.GetFiles("*pz07_*");
+
+                input = new StreamReader(debug[0]);
+
+                string line = " ";
+                while((line = input.ReadLine()) != null)
+                {
+                    Console.WriteLine(line);
+                }
+            }
+            catch(Exception ex)
+            {
+                Console.WriteLine("Error: " + ex.Message);
             }
         }
     }
