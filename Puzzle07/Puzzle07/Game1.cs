@@ -646,11 +646,13 @@ namespace Puzzle07
                 {
                     Console.WriteLine(line);
                 }
+
+                input.Close();
             }
             catch(Exception ex)
             {
                 Console.WriteLine("Error: " + ex.Message);
-            }
+            } 
         }
     }
 }

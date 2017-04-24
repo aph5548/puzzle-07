@@ -117,7 +117,7 @@ namespace Puzzle07
             lever2.Draw(spriteBatch);
             lever3.Draw(spriteBatch);
 
-            if(this.Complete)
+            if(comp)
             {
                 exit.Draw(spriteBatch);
             }
