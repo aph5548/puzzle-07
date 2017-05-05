@@ -124,7 +124,7 @@ namespace Puzzle07
         // this method will be used to store draw data for our object 
         public virtual void Draw(SpriteBatch spriteBatch)
         {
-            spriteBatch.Draw(texture, position, Color.White);
+               spriteBatch.Draw(texture, position, Color.White);
         }
     }
 }

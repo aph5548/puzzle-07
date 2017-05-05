@@ -21,7 +21,6 @@ namespace Puzzle07
 
         public Lever(int x, int y, int width, int height): base(x, y, width, height)
         {
-            this.Active = false; //Starts off not active
             //Default constructor
         }
 
