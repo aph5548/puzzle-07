@@ -15,6 +15,13 @@ namespace Puzzle07
 {
     class WaterRoom : Room
     {
+        Wall wall1; // left wall
+        Wall wall2; // right wall
+        Wall wall3; // bottom wall
+        Wall wall4; // wall left of door
+        Wall wall5; // wall right of door
+        Door testDoor;
+        RoomExit exit;
         Interactable sink;
         WaterContainer finalContainer;
         WaterContainer waterContainer1;
@@ -29,6 +36,77 @@ namespace Puzzle07
             finalContainer = new WaterContainer(contMax1 + contMax2, 0, finalContPos.X, finalContPos.Y, finalContPos.Width, finalContPos.Height);
             waterContainer1 = new WaterContainer(contMax1, 0, waterContPos1.X, waterContPos1.Y, waterContPos1.Width, waterContPos1.Height);
             waterContainer2 = new WaterContainer(contMax2, 0, waterContPos2.X, waterContPos2.Y, waterContPos2.Width, waterContPos2.Height);
+
+            // setting room defaults
+            wall1 = new Wall(-10, 0, 20, 1024);
+            wall2 = new Wall(1270, 0, 20, 1024);
+            wall3 = new Wall(0, 1014, 1280, 20);
+            wall4 = new Wall(0, 0, 448, 20);
+            wall5 = new Wall(576, 0, 700, 20);
+            exit = new RoomExit(448, -50, 128, 128);
+            testDoor = new Door(448, -50, 128, 128);
+
+
+            
+            
+        }
+
+        public void Update(bool keyPressedE, bool keyPressedQ, GameTime gameTime)
+        {
+
+
+
+            bool isColliding1 = WaterContainer1.CheckCollision(Player1);
+            if (isColliding1 && keyPressedE && WaterContainer2.OnOff == false)
+            {
+                WaterContainer1.OnOff = true;
+
+            }
+            if (WaterContainer1.CheckCollision(Sink) && keyPressedE)
+            {
+                Fill();
+            }
+            else if (WaterContainer1.CheckCollision(FinalContainer) && keyPressedE)
+            {
+                FinalContainerCondition();
+            }
+
+            else if (WaterContainer1.CheckCollision(Drain) && keyPressedE)
+            {
+                DrainCup();
+            }
+
+            if (WaterContainer1.OnOff == true && keyPressedQ)
+            {
+                WaterContainer1.OnOff = false;
+            }
+
+            bool isColliding2 = WaterContainer2.CheckCollision(Player1);
+            if (isColliding2 && keyPressedE && WaterContainer1.OnOff == false)
+            {
+                WaterContainer2.OnOff = true;
+
+            }
+
+            if (WaterContainer2.CheckCollision(Sink) && keyPressedE)
+            {
+                Fill();
+            }
+
+            else if (WaterContainer2.CheckCollision(FinalContainer) && keyPressedE)
+            {
+                FinalContainerCondition();
+            }
+
+            else if (WaterContainer2.CheckCollision(Drain) && keyPressedE)
+            {
+                DrainCup();
+            }
+
+            if (WaterContainer2.OnOff == true && keyPressedQ)
+            {
+                WaterContainer2.OnOff = false;
+            }
         }
 
         // accessors

@@ -81,7 +81,7 @@ namespace Puzzle07
         public Game1()
         {
             graphics = new GraphicsDeviceManager(this);
-            graphics.IsFullScreen = true;
+            graphics.IsFullScreen = false;
             Content.RootDirectory = "Content";
             graphics.PreferredBackBufferWidth = 1280; //Can be commented back in, changes the size of the screen. C; - Michael
             graphics.PreferredBackBufferHeight = 1024;
@@ -301,59 +301,7 @@ namespace Puzzle07
                     */
                     testDoor.Collision(player);
 
-                   
-
-                    bool isColliding1 = waterRoom.WaterContainer1.CheckCollision(player);
-                    if (isColliding1 && SingleKeyPress(Keys.E) && waterRoom.WaterContainer2.OnOff == false)
-                    {
-                        waterRoom.WaterContainer1.OnOff = true;
-                        
-                    }
-                    if (waterRoom.WaterContainer1.CheckCollision(waterRoom.Sink) && SingleKeyPress(Keys.E))
-                    {
-                        waterRoom.Fill();
-                    }
-                    else if (waterRoom.WaterContainer1.CheckCollision(waterRoom.FinalContainer) && SingleKeyPress(Keys.E))
-                    {
-                        waterRoom.FinalContainerCondition();
-                    }
-
-                    else if (waterRoom.WaterContainer1.CheckCollision(waterRoom.Drain) && SingleKeyPress(Keys.E))
-                    {
-                        waterRoom.DrainCup();
-                    }
-
-                    if (waterRoom.WaterContainer1.OnOff == true && SingleKeyPress(Keys.Q))
-                    {
-                        waterRoom.WaterContainer1.OnOff = false;
-                    }
-
-                    bool isColliding2 = waterRoom.WaterContainer2.CheckCollision(player);
-                    if (isColliding2 && SingleKeyPress(Keys.E) && waterRoom.WaterContainer1.OnOff == false)
-                    {
-                        waterRoom.WaterContainer2.OnOff = true;
-                        
-                    }
-
-                    if (waterRoom.WaterContainer2.CheckCollision(waterRoom.Sink) && SingleKeyPress(Keys.E))
-                    {
-                        waterRoom.Fill();
-                    }
-
-                    else if (waterRoom.WaterContainer2.CheckCollision(waterRoom.FinalContainer) && SingleKeyPress(Keys.E))
-                    {
-                        waterRoom.FinalContainerCondition();
-                    }
-
-                    else if (waterRoom.WaterContainer2.CheckCollision(waterRoom.Drain) && SingleKeyPress(Keys.E))
-                    {
-                        waterRoom.DrainCup();
-                    }
-
-                    if (waterRoom.WaterContainer2.OnOff == true && SingleKeyPress(Keys.Q))
-                    {
-                        waterRoom.WaterContainer2.OnOff = false;
-                    }
+                    waterRoom.Update(SingleKeyPress(Keys.E), SingleKeyPress(Keys.Q), gameTime);
 
                     if (waterRoom.Complete)
                     {
@@ -439,28 +387,7 @@ namespace Puzzle07
                         gameState = GameState.InGameMenu;
                     }
 
-                    bool isColliding1 = leverRoom.Lever1.CheckCollision(player);
-                    if (isColliding1 && SingleKeyPress(Keys.E) && leverRoom.Lever1.OnOff == false)
-                    {
-                        leverRoom.Lever1.OnOff = true;
-                    }
-
-                     
-                    else if (isColliding1 && SingleKeyPress(Keys.E) && leverRoom.Lever1.OnOff == true)
-                    {
-                        leverRoom.Lever1.OnOff = false;
-                    }
-
-                    bool isColliding2 = leverRoom.Lever2.CheckCollision(player);
-                    if (isColliding2 && SingleKeyPress(Keys.E) && leverRoom.Lever2.OnOff == false)
-                    {
-                        leverRoom.Lever2.OnOff = true;
-                    }
-
-                    else if (isColliding2 && SingleKeyPress(Keys.E) && leverRoom.Lever2.OnOff == true)
-                    {
-                        leverRoom.Lever2.OnOff = false;
-                    }
+                    leverRoom.Update(SingleKeyPress(Keys.E), gameTime);
 
                     if(leverRoom.Lever1.OnOff == true && leverRoom.Lever2.OnOff == false)
                     {
@@ -1310,7 +1237,7 @@ namespace Puzzle07
         }
 
         // method for checking for a single key press
-        bool SingleKeyPress(Keys key)
+        public bool SingleKeyPress(Keys key)
         {
             if(kbState.IsKeyDown(key) && previousKbState.IsKeyUp(key))
             {

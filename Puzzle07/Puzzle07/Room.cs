@@ -39,7 +39,7 @@ namespace Puzzle07
 
         public Player Player1
         {
-            get { return Player1; }
+            get { return player; }
         }
 
 
