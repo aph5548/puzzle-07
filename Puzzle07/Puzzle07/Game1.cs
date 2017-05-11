@@ -126,7 +126,7 @@ namespace Puzzle07
             testSprite = new Puzzle07.Sprite(32, 32, 50, 8, new Vector2(100, 700));
             waterRoom = new WaterRoom(kbState, player, new Rectangle(50, 600, 128, 128), new Rectangle(100, 100, 128, 128), new Rectangle(700, 100, 64, 64), new Rectangle(800, 100, 64, 64), rngWater.Next(2, 7), rngWater.Next(2, 7), new Rectangle(500, 700, 64, 64));
             interact.Add(lightswitch);
-            leverRoom = new LeverRoomAustin(kbState, player, new Rectangle(700, 100, 64, 64), new Rectangle(800, 100, 64, 64));
+            leverRoom = new LeverRoomAustin(kbState, player, new Rectangle(700, 100, 64, 64), new Rectangle(800, 100, 64, 64),drainTex, sinkTex);
             redLight = new RedLightRoom(kbState, player, new Rectangle(700, 100, 64, 64), new Rectangle(300, 700, 64, 64), new Rectangle(500, 500, 64, 64));
             mathRoom = new MathRoom(kbState, player);
             timeSinceLastMove = 0;
@@ -171,6 +171,10 @@ namespace Puzzle07
             testDoor.Texture = doorTex;
             cursor.Texture = interSprite1;
             leverRoom.Lever1.Texture = lever;
+            leverRoom.Lever3.Texture = lever;
+            leverRoom.Lever4.Texture = lever;
+            leverRoom.Lever5.Texture = lever;
+            leverRoom.Lever6.Texture = lever;
             wall1.Texture = vertWallTex;
             wall2.Texture = vertWallTex;
             wall3.Texture = wallTex;
@@ -970,6 +974,11 @@ namespace Puzzle07
 
                     leverRoom.Lever1.Draw(spriteBatch);
                     leverRoom.Lever2.Draw(spriteBatch);
+                    leverRoom.Lever3.Draw(spriteBatch);
+                    leverRoom.Lever4.Draw(spriteBatch);
+                    leverRoom.Lever5.Draw(spriteBatch);
+                    leverRoom.Lever6.Draw(spriteBatch);
+
 
 
                     spriteBatch.Draw(testDoor2.Texture, testDoor2.Position, Color.White);

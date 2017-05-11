@@ -54,6 +54,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Button.cs" />
+    <Compile Include="ColorLights.cs" />
     <Compile Include="Cursor.cs" />
     <Compile Include="Door.cs" />
     <Compile Include="FailTile.cs" />
