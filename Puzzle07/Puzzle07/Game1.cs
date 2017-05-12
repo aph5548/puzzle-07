@@ -6,7 +6,6 @@ using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
-using Microsoft.Xna.Framework.Media;
 using System.IO;
 /*
  * Austin Stone
@@ -26,6 +25,10 @@ namespace Puzzle07
     {
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
+        Texture2D resumeTex;
+        Texture2D pauseExitTex;
+        Texture2D restartTex;
+        Texture2D titleTex;
         Texture2D floorTex;
         Texture2D cupSmall;
         Texture2D cupLarge;
@@ -42,11 +45,6 @@ namespace Puzzle07
         Texture2D spriteSheet;
         Texture2D detectTex;
         Texture2D lever;
-        Texture2D greenLight;
-        Texture2D red;
-        Song song1;
-        double time;
-        Song song2;
         SpriteFont font;
         Player player;
         List<Interactable> interact;
@@ -61,14 +59,16 @@ namespace Puzzle07
         RoomExit exit2;
         Button start;
         Button quit;
+        Button pauseResume;
+        Button pauseRestart;
+        Button pauseExit;
         Sprite testSprite;
         Wall wall1; // left wall
         Wall wall2; // right wall
         Wall wall3; // bottom wall
         Wall wall4; // wall left of door
         Wall wall5; // wall right of door
-        bool song1con = false;
-        bool song2con = false;
+
         // middle walls in math room
         Wall wall6;
         Wall wall7;
@@ -130,14 +130,19 @@ namespace Puzzle07
             start.Location = new Rectangle(50, 400, 500, 100);
             quit = new Button();
             quit.Location = new Rectangle(50, 520, 500, 100);
+            pauseExit = new Button();
+            pauseExit.Location = new Rectangle(440, 700, 400, 100);
+            pauseResume = new Button();
+            pauseResume.Location = new Rectangle(440, 300, 400, 100);
+            pauseRestart = new Button();
+            pauseRestart.Location = new Rectangle(440, 500, 400, 100);
             testSprite = new Puzzle07.Sprite(32, 32, 50, 8, new Vector2(100, 700));
             waterRoom = new WaterRoom(kbState, player, new Rectangle(50, 600, 128, 128), new Rectangle(100, 100, 128, 128), new Rectangle(700, 100, 64, 64), new Rectangle(800, 100, 64, 64), rngWater.Next(2, 7), rngWater.Next(2, 7), new Rectangle(500, 700, 64, 64));
             interact.Add(lightswitch);
-            leverRoom = new LeverRoomAustin(kbState, player, new Rectangle(700, 100, 64, 64), new Rectangle(800, 100, 64, 64),drainTex, sinkTex);
+            leverRoom = new LeverRoomAustin(kbState, player, new Rectangle(700, 100, 64, 64), new Rectangle(800, 100, 64, 64));
             redLight = new RedLightRoom(kbState, player, new Rectangle(700, 100, 64, 64), new Rectangle(300, 700, 64, 64), new Rectangle(500, 500, 64, 64));
             mathRoom = new MathRoom(kbState, player);
             timeSinceLastMove = 0;
-            time = 90;
             ReadFile();
 
 
@@ -155,6 +160,9 @@ namespace Puzzle07
 
             // TODO: use this.Content to load your game content here
             sprite = Content.Load<Texture2D>("PlayerSprite");
+            pauseResume.Texture = Content.Load<Texture2D>("ResumeButton");
+            pauseRestart.Texture = Content.Load<Texture2D>("RestartButton");
+            pauseExit.Texture = Content.Load<Texture2D>("PauseExitButton");
             objectSprite1 = Content.Load<Texture2D>("enemySprite");
             interSprite1 = Content.Load<Texture2D>("enemySprite");
             buttonTexture = Content.Load<Texture2D>("buttonTexture");
@@ -167,18 +175,12 @@ namespace Puzzle07
             vertWallTex = Content.Load<Texture2D>("WallVertical");
             doorTex = Content.Load<Texture2D>("Door");
             sinkTex = Content.Load<Texture2D>("Sink");
-            floorTex = Content.Load<Texture2D>("RoomBackground");
+            floorTex = Content.Load<Texture2D>("FloorTileBlank");
             start.Texture = Content.Load<Texture2D>("StartButton");
             lever = Content.Load<Texture2D>("LeverLeft");
-            
             quit.Texture = Content.Load<Texture2D>("ExitButton");
-            detectTex = Content.Load<Texture2D>("CameraArea");
-
-            greenLight = Content.Load<Texture2D>("GreenLight");
-            red = Content.Load<Texture2D>("RedLight");
-            song1 = Content.Load<Song>("menu_song");
-            song2 = Content.Load<Song>("song");
-
+            detectTex = Content.Load<Texture2D>("enemySprite");
+            titleTex = Content.Load<Texture2D>("Title");
             //spriteSheet = Content.Load<Texture2D>("testSpriteSheet");
             player.Texture = sprite;
             lightswitch.Texture = interSprite1;
@@ -186,13 +188,6 @@ namespace Puzzle07
             testDoor.Texture = doorTex;
             cursor.Texture = interSprite1;
             leverRoom.Lever1.Texture = lever;
-            leverRoom.Lever3.Texture = lever;
-            leverRoom.Lever4.Texture = lever;
-            leverRoom.Lever5.Texture = lever;
-            leverRoom.Lever6.Texture = lever;
-            //leverRoom.light1.Texture = red;
-            //leverRoom.light2.Texture = red;
-            //leverRoom.light3.Texture = red;
             wall1.Texture = vertWallTex;
             wall2.Texture = vertWallTex;
             wall3.Texture = wallTex;
@@ -245,25 +240,13 @@ namespace Puzzle07
         {
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
-            
+
             // TODO: Add your update logic here
             
 
             // gets new keyborad state
             kbState = Keyboard.GetState();
-            
-            if(time <= 0)
-            {
-                time = 90;
-                ResetGame();
-                gameState = GameState.GameOver;
-                
-            }
-            else if(time > 0 && gameState != GameState.GameOver && gameState != GameState.Menu && gameState != GameState.InGameMenu)
-            {
 
-                time -= (float)gameTime.ElapsedGameTime.TotalSeconds;
-            }
             mouse = Mouse.GetState();
             cursor.Update(mouse);
             // finite state machine checks
@@ -271,51 +254,26 @@ namespace Puzzle07
             {
                 if (gameState == GameState.Menu)
                 {
-                    //start menu song
-                    if(song1con == false)
-                    {
-                        if(song2con == true)
-                        {
-                            MediaPlayer.Stop();
-                            song2con = false;
-                        }
-                        MediaPlayer.Play(song1);
-                        MediaPlayer.IsRepeating = true;
-                        song1con = true;
-
-                    }
 
                     //Check too see if the buttons are clicked or not
                     
                   if (cursor.Position.Intersects(start.Location) && mouse.LeftButton == ButtonState.Pressed)
                     {
-                        ResetGame();
                         gameState = GameState.Game;
-                        
-                        
+                        gameState = GameState.Game; //start the game
+                        ResetGame();
                     }
                     if (cursor.Position.Intersects(quit.Location) && mouse.LeftButton == ButtonState.Pressed)
                     {
                         Exit();
-                        
+                        Exit(); //Quit
                     }
                 }
             
 
                 else if (gameState == GameState.Game)
                 {
-                    if (song2con == false)
-                    {
-                        if (song1con == true)
-                        {
-                            MediaPlayer.Stop();
-                            song2con = false;
-                        }
-                        MediaPlayer.Play(song2);
-                        MediaPlayer.IsRepeating = true;
-                        song2con = true;
-
-                    }
+                    
                     player.Move(kbState); //Made a move method so that we're not looking at a massive if statement - Michael
                                           //time -= gameTime.ElapsedGameTime.TotalSeconds;
 
@@ -323,7 +281,6 @@ namespace Puzzle07
 
 
                     ScreenWrap(player);
-                    
 
                     if (SingleKeyPress(Keys.P))
                     {
@@ -360,7 +317,6 @@ namespace Puzzle07
                     }
                     */
                     testDoor.Collision(player);
-                    
 
                     waterRoom.Update(SingleKeyPress(Keys.E), SingleKeyPress(Keys.Q), gameTime);
 
@@ -398,9 +354,25 @@ namespace Puzzle07
 
                 else if (gameState == GameState.InGameMenu)
                 {
-                    if (SingleKeyPress(Keys.P))
+                    if (SingleKeyPress(Keys.P)) //Button interactions for the pause menu
                     {
                         gameState = GameState.Game;
+                    }
+
+                    if (cursor.Position.Intersects(pauseResume.Location) == true && mouse.LeftButton == ButtonState.Pressed)
+                    {
+                        gameState = GameState.Game;
+                    }
+
+                    if (cursor.Position.Intersects(pauseRestart.Location) == true && mouse.LeftButton == ButtonState.Pressed)
+                    {
+                        gameState = GameState.Game;
+                        ResetGame();
+                    }
+
+                    if (cursor.Position.Intersects(pauseExit.Location) == true && mouse.LeftButton == ButtonState.Pressed)
+                    {
+                        Exit();
                     }
                 }
 
@@ -443,8 +415,7 @@ namespace Puzzle07
                     
                     ScreenWrap(player);
 
-                    
-                        if (SingleKeyPress(Keys.P))
+                    if (SingleKeyPress(Keys.P))
                     {
                         gameState = GameState.InGameMenu;
                     }
@@ -485,9 +456,25 @@ namespace Puzzle07
 
                 else if (gameState == GameState.InGameMenu)
                 {
-                    if (SingleKeyPress(Keys.P))
+                    if (SingleKeyPress(Keys.P)) //Button interactions for the pause menu
                     {
                         gameState = GameState.Game;
+                    }
+
+                    if (cursor.Position.Intersects(pauseResume.Location) == true && mouse.LeftButton == ButtonState.Pressed)
+                    {
+                        gameState = GameState.Game;
+                    }
+
+                    if (cursor.Position.Intersects(pauseRestart.Location) == true && mouse.LeftButton == ButtonState.Pressed)
+                    {
+                        gameState = GameState.Game;
+                        ResetGame();
+                    }
+
+                    if (cursor.Position.Intersects(pauseExit.Location) == true && mouse.LeftButton == ButtonState.Pressed)
+                    {
+                        Exit();
                     }
                 }
 
@@ -574,31 +561,31 @@ namespace Puzzle07
                     
                     
                     // this is the code to move around the detection box
-                    if(redLight.Detection.X <= 50 && timeSinceLastMove > 1)
+                    if(redLight.Detection.X <= 0 && timeSinceLastMove > 2)
                     {
                         timeSinceLastMove = 0;
                         redLight.Detection.X += 300;
                         
                     }
 
-                    else if(redLight.Detection.X >= 1000 && timeSinceLastMove > 1)
+                    else if(redLight.Detection.X >= 1280 && timeSinceLastMove > 2)
                     {
                         timeSinceLastMove = 0;
                         redLight.Detection.X = 1;
                     }
 
-                    if(redLight.Detection.Y <= 50 && timeSinceLastMove > 1)
+                    if(redLight.Detection.Y <= 0 && timeSinceLastMove > 2)
                     {
                         timeSinceLastMove = 0;
                         redLight.Detection.Y += 300;
                     }
 
-                    else if (redLight.Detection.Y >= 900 && timeSinceLastMove > 1)
+                    else if (redLight.Detection.Y >= 1024 && timeSinceLastMove > 2)
                     {
                         timeSinceLastMove = 0;
                         redLight.Detection.Y = 1;
                     }
-                    if(redLight.Detection.Y > 50 && timeSinceLastMove > 2 && redLight.Detection.X > 0)
+                    if(redLight.Detection.Y > 0 && timeSinceLastMove > 2 && redLight.Detection.X > 0)
                     {
                         timeSinceLastMove = 0;
                         redLight.Detection.X += 300;
@@ -649,9 +636,25 @@ namespace Puzzle07
 
                 else if (gameState == GameState.InGameMenu)
                 {
-                    if (SingleKeyPress(Keys.P))
+                    if (SingleKeyPress(Keys.P)) //Button interactions for the pause menu
                     {
                         gameState = GameState.Game;
+                    }
+
+                    if(cursor.Position.Intersects(pauseResume.Location) == true && mouse.LeftButton == ButtonState.Pressed)
+                    {
+                        gameState = GameState.Game;
+                    }
+
+                    if(cursor.Position.Intersects(pauseRestart.Location) == true && mouse.LeftButton == ButtonState.Pressed)
+                    {
+                        gameState = GameState.Game;
+                        ResetGame();
+                    }
+
+                    if (cursor.Position.Intersects(pauseExit.Location) == true && mouse.LeftButton == ButtonState.Pressed)
+                    {
+                        Exit();
                     }
                 }
 
@@ -852,12 +855,7 @@ namespace Puzzle07
                     
                     if (exit2.ChangeRoom(player, mathRoom.Complete))
                     {
-                        
-                        ResetGame();
-                        
                         gameState = GameState.GameOver;
-                        
-
                     }
 
 
@@ -888,9 +886,25 @@ namespace Puzzle07
 
                 else if (gameState == GameState.InGameMenu)
                 {
-                    if (SingleKeyPress(Keys.P))
+                    if (SingleKeyPress(Keys.P)) //Button interactions for the pause menu
                     {
                         gameState = GameState.Game;
+                    }
+
+                    if (cursor.Position.Intersects(pauseResume.Location) == true && mouse.LeftButton == ButtonState.Pressed)
+                    {
+                        gameState = GameState.Game;
+                    }
+
+                    if (cursor.Position.Intersects(pauseRestart.Location) == true && mouse.LeftButton == ButtonState.Pressed)
+                    {
+                        gameState = GameState.Game;
+                        ResetGame();
+                    }
+
+                    if (cursor.Position.Intersects(pauseExit.Location) == true && mouse.LeftButton == ButtonState.Pressed)
+                    {
+                        Exit();
                     }
                 }
 
@@ -916,11 +930,10 @@ namespace Puzzle07
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Draw(GameTime gameTime)
         {
-            GraphicsDevice.Clear(Color.CornflowerBlue);
+            GraphicsDevice.Clear(Color.DarkGray);
 
             // TODO: Add your drawing code here
             spriteBatch.Begin();
-
             
 
             // check game state and draw what is needed in each
@@ -928,6 +941,8 @@ namespace Puzzle07
             {
                 if (gameState == GameState.Menu)
                 {
+                    spriteBatch.Draw(titleTex, new Vector2(50, 50), Color.White);
+
                     //Draw each of the main menu buttons, if the mouse if hovering over them then tint them a different color
 
                     if (cursor.Position.Intersects(start.Location))
@@ -939,7 +954,6 @@ namespace Puzzle07
                         spriteBatch.Draw(quit.Texture, quit.Location, Color.DarkGray);
                     else
                         spriteBatch.Draw(quit.Texture, quit.Location, Color.White);
-                    spriteBatch.DrawString(font, "Puzzle07", new Vector2(50f, 100f), Color.Black);
                     //Title
                 }
 
@@ -948,15 +962,12 @@ namespace Puzzle07
                     
                     testDoor2.Collision(player);
                     // wall and floor draw code 
-                    spriteBatch.Draw(floorTex, new Rectangle(0, 0, 1280, 1024), Color.White);
                     wall1.Draw(spriteBatch);
                     wall2.Draw(spriteBatch);
                     wall3.Draw(spriteBatch);
                     wall4.Draw(spriteBatch);
                     wall5.Draw(spriteBatch);
-                    
-
-                    
+                    spriteBatch.Draw(floorTex, new Rectangle(0, 0, 1280, 1024), Color.White);
                     
                     // draw code for water room
                     spriteBatch.DrawString(font, "Current: " + waterRoom.FinalContainer.Amount.ToString(), new Vector2(50, 80), Color.Black);
@@ -993,9 +1004,24 @@ namespace Puzzle07
 
                 }
 
-                else if (gameState == GameState.InGameMenu)
+                else if (gameState == GameState.InGameMenu) //Draw pause menu buttons
                 {
-                    spriteBatch.DrawString(font, "Pause", new Vector2(250f, 10f), Color.Black);
+                    spriteBatch.DrawString(font, "Press 'P' to unpause", new Vector2(250f, 10f), Color.Black);
+
+                    if (cursor.Position.Intersects(pauseResume.Location) == true)
+                        spriteBatch.Draw(pauseResume.Texture, pauseResume.Location, Color.DarkGray);
+                    else
+                        spriteBatch.Draw(pauseResume.Texture, pauseResume.Location, Color.White);
+
+                    if (cursor.Position.Intersects(pauseRestart.Location) == true)
+                        spriteBatch.Draw(pauseRestart.Texture, pauseRestart.Location, Color.DarkGray);
+                    else
+                        spriteBatch.Draw(pauseRestart.Texture, pauseRestart.Location, Color.White);
+
+                    if (cursor.Position.Intersects(pauseExit.Location) == true)
+                        spriteBatch.Draw(pauseExit.Texture, pauseExit.Location, Color.DarkGray);
+                    else
+                        spriteBatch.Draw(pauseExit.Texture, pauseExit.Location, Color.White);
                 }
                 else
                 {
@@ -1028,13 +1054,12 @@ namespace Puzzle07
                 else if (gameState == GameState.Game)
                 {
                     // wall and floor draw code 
-                    spriteBatch.Draw(floorTex, new Rectangle(0, 0, 1280, 1024), Color.White);
                     wall1.Draw(spriteBatch);
                     wall2.Draw(spriteBatch);
                     wall3.Draw(spriteBatch);
                     wall4.Draw(spriteBatch);
                     wall5.Draw(spriteBatch);
-                    
+                    spriteBatch.Draw(floorTex, new Rectangle(0, 0, 1280, 1024), Color.White);
 
                     // draw code for lever room
                     spriteBatch.DrawString(font, "on/off: " + leverRoom.Lever1.OnOff, new Vector2(50, 80), Color.Black);
@@ -1042,11 +1067,6 @@ namespace Puzzle07
 
                     leverRoom.Lever1.Draw(spriteBatch);
                     leverRoom.Lever2.Draw(spriteBatch);
-                    leverRoom.Lever3.Draw(spriteBatch);
-                    leverRoom.Lever4.Draw(spriteBatch);
-                    leverRoom.Lever5.Draw(spriteBatch);
-                    leverRoom.Lever6.Draw(spriteBatch);
-
 
 
                     spriteBatch.Draw(testDoor2.Texture, testDoor2.Position, Color.White);
@@ -1074,9 +1094,24 @@ namespace Puzzle07
 
                 }
 
-                else if (gameState == GameState.InGameMenu)
+                else if (gameState == GameState.InGameMenu) //Draw pause menu buttons
                 {
-                    spriteBatch.DrawString(font, "Pause", new Vector2(250f, 10f), Color.Black);
+                    spriteBatch.DrawString(font, "Press 'P' to unpause", new Vector2(250f, 10f), Color.Black);
+
+                    if (cursor.Position.Intersects(pauseResume.Location) == true)
+                        spriteBatch.Draw(pauseResume.Texture, pauseResume.Location, Color.DarkGray);
+                    else
+                        spriteBatch.Draw(pauseResume.Texture, pauseResume.Location, Color.White);
+
+                    if (cursor.Position.Intersects(pauseRestart.Location) == true)
+                        spriteBatch.Draw(pauseRestart.Texture, pauseRestart.Location, Color.DarkGray);
+                    else
+                        spriteBatch.Draw(pauseRestart.Texture, pauseRestart.Location, Color.White);
+
+                    if (cursor.Position.Intersects(pauseExit.Location) == true)
+                        spriteBatch.Draw(pauseExit.Texture, pauseExit.Location, Color.DarkGray);
+                    else
+                        spriteBatch.Draw(pauseExit.Texture, pauseExit.Location, Color.White);
                 }
                 else
                 {
@@ -1109,13 +1144,12 @@ namespace Puzzle07
                 else if (gameState == GameState.Game)
                 {
                     // wall and floor draw code 
-                    spriteBatch.Draw(floorTex, new Rectangle(0, 0, 1280, 1024), Color.White);
                     wall1.Draw(spriteBatch);
                     wall2.Draw(spriteBatch);
                     wall3.Draw(spriteBatch);
                     wall4.Draw(spriteBatch);
                     wall5.Draw(spriteBatch);
-                    
+                    spriteBatch.Draw(floorTex, new Rectangle(0, 0, 1280, 1024), Color.White);
 
                     // draw code for lever room
                     spriteBatch.DrawString(font, "on/off: " + redLight.Lever1.OnOff, new Vector2(50, 80), Color.Black);
@@ -1153,9 +1187,24 @@ namespace Puzzle07
 
                 }
 
-                else if (gameState == GameState.InGameMenu)
+                else if (gameState == GameState.InGameMenu) //Draw pause menu buttons
                 {
-                    spriteBatch.DrawString(font, "Pause", new Vector2(250f, 10f), Color.Black);
+                    spriteBatch.DrawString(font, "Press 'P' to unpause", new Vector2(250f, 10f), Color.Black);
+
+                    if (cursor.Position.Intersects(pauseResume.Location) == true)
+                        spriteBatch.Draw(pauseResume.Texture, pauseResume.Location, Color.DarkGray);
+                    else
+                        spriteBatch.Draw(pauseResume.Texture, pauseResume.Location, Color.White);
+
+                    if (cursor.Position.Intersects(pauseRestart.Location) == true)
+                        spriteBatch.Draw(pauseRestart.Texture, pauseRestart.Location, Color.DarkGray);
+                    else
+                        spriteBatch.Draw(pauseRestart.Texture, pauseRestart.Location, Color.White);
+
+                    if (cursor.Position.Intersects(pauseExit.Location) == true)
+                        spriteBatch.Draw(pauseExit.Texture, pauseExit.Location, Color.DarkGray);
+                    else
+                        spriteBatch.Draw(pauseExit.Texture, pauseExit.Location, Color.White);
                 }
                 else
                 {
@@ -1188,7 +1237,6 @@ namespace Puzzle07
                 else if (gameState == GameState.Game)
                 {
                     // wall and floor draw code 
-                    spriteBatch.Draw(floorTex, new Rectangle(0, 0, 1280, 1024), Color.White);
                     wall1.Draw(spriteBatch);
                     wall2.Draw(spriteBatch);
                     wall3.Draw(spriteBatch);
@@ -1196,39 +1244,22 @@ namespace Puzzle07
                     wall5.Draw(spriteBatch);
                     wall6.Draw(spriteBatch);
                     wall7.Draw(spriteBatch);
+                    spriteBatch.Draw(floorTex, new Rectangle(0, 0, 1280, 1024), Color.White);
 
-                    // first row
-                    spriteBatch.DrawString(font, "4 + 5 * 3 / 5", new Vector2(550, 700), Color.Black);
-                    spriteBatch.DrawString(font, "7", new Vector2(120, 850), Color.Black);
-                    spriteBatch.DrawString(font, "9", new Vector2(320, 850), Color.Black);
-                    spriteBatch.DrawString(font, "27/5", new Vector2(520, 850), Color.Black);
-                    spriteBatch.DrawString(font, "5", new Vector2(720, 850), Color.Black);
+
                     mathRoom.Lever1.Draw(spriteBatch);
                     mathRoom.Lever2.Draw(spriteBatch);
                     mathRoom.Lever3.Draw(spriteBatch);
                     mathRoom.Lever4.Draw(spriteBatch);
-
-                    // second row
                     mathRoom.Lever5.Draw(spriteBatch);
                     mathRoom.Lever6.Draw(spriteBatch);
                     mathRoom.Lever7.Draw(spriteBatch);
                     mathRoom.Lever8.Draw(spriteBatch);
-                    spriteBatch.DrawString(font, "4 / 2 + 6 * 7 * 2", new Vector2(550, 300), Color.Black);
-                    spriteBatch.DrawString(font, "80", new Vector2(120, 450), Color.Black);
-                    spriteBatch.DrawString(font, "76", new Vector2(320, 450), Color.Black);
-                    spriteBatch.DrawString(font, "86", new Vector2(520, 450), Color.Black);
-                    spriteBatch.DrawString(font, "83", new Vector2(720, 450), Color.Black);
-
-                    // third row
                     mathRoom.Lever9.Draw(spriteBatch);
                     mathRoom.Lever10.Draw(spriteBatch);
                     mathRoom.Lever11.Draw(spriteBatch);
                     mathRoom.Lever12.Draw(spriteBatch);
-                    spriteBatch.DrawString(font, "3 + 5 / 2 * 4", new Vector2(550, 25), Color.Black);
-                    spriteBatch.DrawString(font, "1", new Vector2(120, 50), Color.Black);
-                    spriteBatch.DrawString(font, "13", new Vector2(320, 50), Color.Black);
-                    spriteBatch.DrawString(font, "7", new Vector2(520, 50), Color.Black);
-                    spriteBatch.DrawString(font, "10", new Vector2(720, 50), Color.Black);
+
 
 
 
@@ -1257,9 +1288,24 @@ namespace Puzzle07
 
                 }
 
-                else if (gameState == GameState.InGameMenu)
+                else if (gameState == GameState.InGameMenu) //Draw pause menu buttons
                 {
-                    spriteBatch.DrawString(font, "Pause", new Vector2(250f, 10f), Color.Black);
+                    spriteBatch.DrawString(font, "Press 'P' to unpause", new Vector2(250f, 10f), Color.Black);
+
+                    if (cursor.Position.Intersects(pauseResume.Location) == true)
+                        spriteBatch.Draw(pauseResume.Texture, pauseResume.Location, Color.DarkGray);
+                    else
+                        spriteBatch.Draw(pauseResume.Texture, pauseResume.Location, Color.White);
+
+                    if (cursor.Position.Intersects(pauseRestart.Location) == true)
+                        spriteBatch.Draw(pauseRestart.Texture, pauseRestart.Location, Color.DarkGray);
+                    else
+                        spriteBatch.Draw(pauseRestart.Texture, pauseRestart.Location, Color.White);
+
+                    if (cursor.Position.Intersects(pauseExit.Location) == true)
+                        spriteBatch.Draw(pauseExit.Texture, pauseExit.Location, Color.DarkGray);
+                    else
+                        spriteBatch.Draw(pauseExit.Texture, pauseExit.Location, Color.White);
                 }
                 else
                 {
@@ -1267,10 +1313,8 @@ namespace Puzzle07
                     spriteBatch.DrawString(font, String.Format("{0:0.00}", level), new Vector2(250f, 100f), Color.Black);
                     //spriteBatch.DrawString(font, String.Format("{0:0.00}", player.TotalScore), new Vector2(250f, 200f), Color.Black);
                     spriteBatch.DrawString(font, "Press Enter to continue", new Vector2(250f, 400f), Color.Black);
-                   
                 }
             }
-            spriteBatch.DrawString(font, string.Format("Time: {0:0.00}", time), new Vector2(900, 100), Color.Black);
             cursor.Draw(spriteBatch);
 
             spriteBatch.End();
@@ -1301,51 +1345,9 @@ namespace Puzzle07
         // method for resetting the game when switching states
         void ResetGame()
         {
-            waterRoom.Complete = false;
-            waterRoom.FinalContainer.Amount = 0;
-            waterRoom.WaterContainer1.Amount = 0;
-            waterRoom.WaterContainer2.Amount = 0;
-            waterRoom.WaterContainer1.X = 700;
-            waterRoom.WaterContainer2.X = 800;
-            waterRoom.WaterContainer1.Y = 100;
-            waterRoom.WaterContainer2.Y = 100;
-
-
-            leverRoom.Complete = false;
-
-            leverRoom.Lever1.OnOff = false;
-            leverRoom.Lever2.OnOff = false;
-            leverRoom.Lever3.OnOff = false;
-            leverRoom.Lever4.OnOff = false;
-            leverRoom.Lever5.OnOff = false;
-            leverRoom.Lever6.OnOff = false;
-
-            redLight.Complete = false;
-            redLight.Lever1.OnOff = false;
-            redLight.Lever2.OnOff = false;
-            redLight.Lever3.OnOff = false;
-
-            mathRoom.Complete = false;
-            mathRoom.Lever1.OnOff = false;
-            mathRoom.Lever2.OnOff = false;
-            mathRoom.Lever3.OnOff = false;
-            mathRoom.Lever4.OnOff = false;
-            mathRoom.Lever5.OnOff = false;
-            mathRoom.Lever6.OnOff = false;
-            mathRoom.Lever7.OnOff = false;
-            mathRoom.Lever8.OnOff = false;
-            mathRoom.Lever9.OnOff = false;
-            mathRoom.Lever10.OnOff = false;
-            mathRoom.Lever11.OnOff = false;
-            mathRoom.Lever12.OnOff = false;
-            wall6.Width = 1280;
-            wall6.Height = 30;
-            wall7.Height = 30;
-            wall7.Width = 1280;
-            
-
-            roomState = RoomEnum.Room1;
-           
+            level = 0;
+            //player.TotalScore = 0;
+            NextLevel();
         }
 
         // method to keep player from going off screen

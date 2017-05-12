@@ -65,7 +65,7 @@ namespace Puzzle07
             lever1 = new Lever(leverPos1.X, leverPos1.Y, leverPos1.Width, leverPos1.Height);
             lever2 = new Lever(leverPos2.X, leverPos2.Y, leverPos2.Width, leverPos2.Height);
             lever3 = new Lever(leverPos3.X, leverPos3.Y, leverPos3.Width, leverPos3.Height);
-            detection = new GameObject(50, 50, 450, 450);
+            detection = new GameObject(300, 300, 300, 300);
             lever1.OnOff = false;
             lever2.OnOff = false;
             lever3.OnOff = false;
