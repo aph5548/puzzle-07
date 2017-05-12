@@ -62,6 +62,7 @@
     <Compile Include="Game1.cs" />
     <Compile Include="GameObject.cs" />
     <Compile Include="Lever.cs" />
+    <Compile Include="LeverRoom2.cs" />
     <Compile Include="LeverRoomAustin.cs" />
     <Compile Include="MainMenu.cs" />
     <Compile Include="MathRoom.cs" />

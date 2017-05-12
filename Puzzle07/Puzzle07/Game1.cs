@@ -75,11 +75,13 @@ namespace Puzzle07
         Wall wall7;
         double timeSinceLastMove;
         LeverRoomAustin leverRoom;
+        LeverRoom2 leverRoom2;
         MathRoom mathRoom;
         RedLightRoom redLight;
         GameState gameState;
         RoomEnum roomState;
         WaterRoom waterRoom;
+        
         Random rngWater;
         Boolean[] wasd = { false, false, false, false };
         string[] wasdStr = { "W", "A", "S", "D" };
@@ -89,6 +91,11 @@ namespace Puzzle07
         Button pauseResume;
         Button pauseRestart;
         Button pauseExit;
+        Room[] waterArr;
+        Room[] leverArr;
+        Room[] redLightArr;
+        Room[] mathArr;
+
         public Game1()
         {
             graphics = new GraphicsDeviceManager(this);
@@ -144,11 +151,15 @@ namespace Puzzle07
             waterRoom = new WaterRoom(kbState, player, new Rectangle(50, 600, 128, 128), new Rectangle(100, 100, 128, 128), new Rectangle(700, 100, 64, 64), new Rectangle(800, 100, 64, 64), rngWater.Next(2, 7), rngWater.Next(2, 7), new Rectangle(500, 700, 64, 64));
             interact.Add(lightswitch);
             leverRoom = new LeverRoomAustin(kbState, player, new Rectangle(700, 100, 64, 64), new Rectangle(900, 100, 64, 64),drainTex, sinkTex);
+            leverRoom2 = new LeverRoom2(kbState, player, new Rectangle(700, 100, 64, 64), new Rectangle(900, 100, 64, 64), drainTex, sinkTex);
             redLight = new RedLightRoom(kbState, player, new Rectangle(700, 100, 64, 64), new Rectangle(300, 700, 64, 64), new Rectangle(500, 500, 64, 64));
             mathRoom = new MathRoom(kbState, player);
             timeSinceLastMove = 0;
             time = 90;
             ReadFile();
+            leverArr = new Room[2];
+            leverArr[0] = leverRoom;
+            leverArr[1] = leverRoom2;
 
 
             base.Initialize();
