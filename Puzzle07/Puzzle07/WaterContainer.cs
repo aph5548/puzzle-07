@@ -32,6 +32,11 @@ namespace Puzzle07
         public int Max
         {
             get { return MAX;  }
+
+            set
+            {
+                MAX = value;
+            }
         }
 
         public int Amount

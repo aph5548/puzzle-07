@@ -17,7 +17,7 @@ namespace PuzzleExternal
         {
 
             // getting ready the streamWriter for use later
-            StreamWriter writer = new StreamWriter("../../DataFile.txt", false);
+            StreamWriter writer = new StreamWriter("../../../../Puzzle07/DataFile.txt", false);
             // code to get values for each room from the player to use
             Console.WriteLine("Each room has 3 variations on it. Please enter 1 - 3 in order to select each room variation you would like");
             Console.Write("Water Room: ");
