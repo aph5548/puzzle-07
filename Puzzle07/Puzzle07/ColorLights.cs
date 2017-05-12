@@ -35,13 +35,11 @@ namespace Puzzle07
             }
         }
 
-        public Texture2D CurrentTexture()
+        public bool State
         {
-            if(state == false)
-            {
-                return redlight;
-            }
-            return greenLight;
+            get { return state; }
+            set { state = value; }
         }
+
     }
 }
