@@ -998,7 +998,7 @@ namespace Puzzle07
             spriteBatch.Begin();
 
             
-
+            
             // check game state and draw what is needed in each
             if (roomState == RoomEnum.Room1)
             {
@@ -1406,7 +1406,12 @@ namespace Puzzle07
                    
                 }
             }
-            spriteBatch.DrawString(font, string.Format("Time: {0:0.00}", time), new Vector2(900, 100), Color.Black);
+
+            if (gameState != GameState.Menu)
+            {
+                spriteBatch.DrawString(font, string.Format("Time: {0:0.00}", time), new Vector2(900, 100), Color.Black);
+            }
+            
             cursor.Draw(spriteBatch);
 
             spriteBatch.End();
@@ -1437,6 +1442,7 @@ namespace Puzzle07
         // method for resetting the game when switching states
         void ResetGame()
         {
+            time = 90;
             waterRoom.Complete = false;
             waterRoom.FinalContainer.Amount = 0;
             waterRoom.WaterContainer1.Amount = 0;
