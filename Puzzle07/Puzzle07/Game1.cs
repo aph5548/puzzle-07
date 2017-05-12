@@ -45,6 +45,7 @@ namespace Puzzle07
         Texture2D greenLight;
         Texture2D red;
         Song song1;
+        double time;
         Song song2;
         SpriteFont font;
         Player player;
@@ -136,6 +137,7 @@ namespace Puzzle07
             redLight = new RedLightRoom(kbState, player, new Rectangle(700, 100, 64, 64), new Rectangle(300, 700, 64, 64), new Rectangle(500, 500, 64, 64));
             mathRoom = new MathRoom(kbState, player);
             timeSinceLastMove = 0;
+            time = 10;
             ReadFile();
 
 
@@ -170,15 +172,13 @@ namespace Puzzle07
             lever = Content.Load<Texture2D>("LeverLeft");
             
             quit.Texture = Content.Load<Texture2D>("ExitButton");
-<<<<<<< HEAD
             detectTex = Content.Load<Texture2D>("CameraArea");
-=======
+
             greenLight = Content.Load<Texture2D>("GreenLight");
             red = Content.Load<Texture2D>("RedLight");
-            detectTex = Content.Load<Texture2D>("enemySprite");
             song1 = Content.Load<Song>("menu_song");
             song2 = Content.Load<Song>("song");
->>>>>>> 76ffaef8f9bf5dfcfbba14f5e0125c91bb23860d
+
             //spriteSheet = Content.Load<Texture2D>("testSpriteSheet");
             player.Texture = sprite;
             lightswitch.Texture = interSprite1;
@@ -251,7 +251,18 @@ namespace Puzzle07
 
             // gets new keyborad state
             kbState = Keyboard.GetState();
-
+            
+            if(time <= 0)
+            {
+                time = 10;
+                ResetGame();
+                gameState = GameState.GameOver;
+                
+            }
+            else if(time > 0)
+            {
+                time -= (float)gameTime.ElapsedGameTime.TotalSeconds;
+            }
             mouse = Mouse.GetState();
             cursor.Update(mouse);
             // finite state machine checks
@@ -908,6 +919,7 @@ namespace Puzzle07
 
             // TODO: Add your drawing code here
             spriteBatch.Begin();
+
             
 
             // check game state and draw what is needed in each
@@ -1257,6 +1269,7 @@ namespace Puzzle07
                    
                 }
             }
+            spriteBatch.DrawString(font, string.Format("Time: {0:0.00}", time), new Vector2(900, 100), Color.Black);
             cursor.Draw(spriteBatch);
 
             spriteBatch.End();
