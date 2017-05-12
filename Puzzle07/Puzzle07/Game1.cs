@@ -143,7 +143,7 @@ namespace Puzzle07
             testSprite = new Puzzle07.Sprite(32, 32, 50, 8, new Vector2(100, 700));
             waterRoom = new WaterRoom(kbState, player, new Rectangle(50, 600, 128, 128), new Rectangle(100, 100, 128, 128), new Rectangle(700, 100, 64, 64), new Rectangle(800, 100, 64, 64), rngWater.Next(2, 7), rngWater.Next(2, 7), new Rectangle(500, 700, 64, 64));
             interact.Add(lightswitch);
-            leverRoom = new LeverRoomAustin(kbState, player, new Rectangle(700, 100, 64, 64), new Rectangle(800, 100, 64, 64),drainTex, sinkTex);
+            leverRoom = new LeverRoomAustin(kbState, player, new Rectangle(700, 100, 64, 64), new Rectangle(900, 100, 64, 64),drainTex, sinkTex);
             redLight = new RedLightRoom(kbState, player, new Rectangle(700, 100, 64, 64), new Rectangle(300, 700, 64, 64), new Rectangle(500, 500, 64, 64));
             mathRoom = new MathRoom(kbState, player);
             timeSinceLastMove = 0;
@@ -202,9 +202,9 @@ namespace Puzzle07
             leverRoom.Lever4.Texture = lever;
             leverRoom.Lever5.Texture = lever;
             leverRoom.Lever6.Texture = lever;
-            //leverRoom.light1.Texture = red;
-            //leverRoom.light2.Texture = red;
-            //leverRoom.light3.Texture = red;
+            leverRoom.Light1.Texture = red;
+            leverRoom.Light2.Texture = red;
+            leverRoom.Light3.Texture = red;
             wall1.Texture = vertWallTex;
             wall2.Texture = vertWallTex;
             wall3.Texture = wallTex;
@@ -478,8 +478,32 @@ namespace Puzzle07
                     }
 
                     leverRoom.Update(SingleKeyPress(Keys.E), gameTime);
+                    if(leverRoom.Light1.State == true)
+                    {
+                        leverRoom.Light1.Texture = greenLight;
+                    }
+                    if (leverRoom.Light2.State == true)
+                    {
+                        leverRoom.Light2.Texture = greenLight;
+                    }
+                    if (leverRoom.Light3.State == true)
+                    {
+                        leverRoom.Light3.Texture = greenLight;
+                    }
+                    if(leverRoom.Light1.State == false && leverRoom.Light1.Texture != red)
+                    {
+                        leverRoom.Light1.Texture = red;
+                    }
+                    if (leverRoom.Light2.State == false && leverRoom.Light2.Texture != red)
+                    {
+                        leverRoom.Light2.Texture = red;
+                    }
+                    if (leverRoom.Light3.State == false && leverRoom.Light3.Texture != red)
+                    {
+                        leverRoom.Light3.Texture = red;
+                    }
 
-                    if(leverRoom.Lever1.OnOff == true && leverRoom.Lever2.OnOff == false)
+                    if (leverRoom.Light1.State == true && leverRoom.Light2.State == true && leverRoom.Light3.State == true)
                     {
                         leverRoom.Complete = true;
                         testDoor2.OpenDoor(true);
@@ -1138,6 +1162,9 @@ namespace Puzzle07
                     leverRoom.Lever5.Draw(spriteBatch);
                     leverRoom.Lever6.Draw(spriteBatch);
 
+                    leverRoom.Light1.Draw(spriteBatch);
+                    leverRoom.Light2.Draw(spriteBatch);
+                    leverRoom.Light3.Draw(spriteBatch);
 
 
                     spriteBatch.Draw(testDoor2.Texture, testDoor2.Position, Color.White);

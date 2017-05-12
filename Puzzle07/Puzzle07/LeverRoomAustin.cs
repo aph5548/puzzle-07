@@ -37,9 +37,9 @@ namespace Puzzle07
             lever1 = new Lever(leverPos1.X, leverPos1.Y, leverPos1.Width, leverPos1.Height);
             lever2 = new Lever(leverPos2.X, leverPos2.Y, leverPos2.Width, leverPos2.Height);
             lever3 = new Lever(600, 100, 64, 64);
-            lever4 = new Lever(600, 200, 64, 64);
-            lever5 = new Lever(600, 300, 64, 64);
-            lever6 = new Lever(600, 400, 64, 64);
+            lever4 = new Lever(600, 300, 64, 64);
+            lever5 = new Lever(600, 500, 64, 64);
+            lever6 = new Lever(600, 700, 64, 64);
             lever1.OnOff = false;
             lever2.OnOff = false;
             lever3.OnOff = false;
@@ -75,12 +75,18 @@ namespace Puzzle07
             if (isColliding1 && keyPressedE && Lever1.OnOff == false)
             {
                 Lever1.OnOff = true;
+                light1.Changer(false);
+                light2.Changer(false);
+                light3.Changer(false);
             }
 
 
             else if (isColliding1 && keyPressedE && Lever1.OnOff == true)
             {
                 Lever1.OnOff = false;
+                light1.Changer(false);
+                light2.Changer(false);
+                light3.Changer(false);
             }
 
            //lvr 2
@@ -94,50 +100,72 @@ namespace Puzzle07
             {
                 Lever2.OnOff = false;
                 light1.Changer(false);
+                light2.Changer(false);
+                light3.Changer(false);
             }
             //lvr3
             if (col3 && keyPressedE && lever3.OnOff == false)
             {
                 lever3.OnOff = true;
+                light2.Changer(true);
             }
 
 
             else if (col3 && keyPressedE && lever3.OnOff == true)
             {
                 lever3.OnOff = false;
+                light1.Changer(false);
+                light2.Changer(false);
+                light3.Changer(false);
             }
             //lvr4
             if (col4 && keyPressedE && lever4.OnOff == false)
             {
                 lever4.OnOff = true;
+                light1.Changer(false);
+                light2.Changer(false);
+                light3.Changer(false);
             }
 
 
             else if (col4 && keyPressedE && lever4.OnOff == true)
             {
                 lever4.OnOff = false;
+                light1.Changer(false);
+                light2.Changer(false);
+                light3.Changer(false);
             }
             //lvr5
             if (col5 && keyPressedE && lever5.OnOff == false)
             {
                 lever5.OnOff = true;
+                light1.Changer(false);
+                light2.Changer(false);
+                light3.Changer(false);
             }
 
 
             else if (col5 && keyPressedE && lever5.OnOff == true)
             {
                 lever5.OnOff = false;
+                light1.Changer(false);
+                light2.Changer(false);
+                light3.Changer(false);
             }
             //lvr6
             if (col6 && keyPressedE && lever6.OnOff == false)
             {
                 lever6.OnOff = true;
+                light3.Changer(true);
             }
 
 
             else if (col6 && keyPressedE && lever6.OnOff == true)
             {
                 lever6.OnOff = false;
+                light1.Changer(false);
+                light2.Changer(false);
+                light3.Changer(false);
             }
         }
         public Lever Lever1
@@ -186,7 +214,29 @@ namespace Puzzle07
             }
         }
 
+        public ColorLights Light1
+        {
+            get
+            {
+                return light1;
+            }
+        }
 
+        public ColorLights Light2
+        {
+            get
+            {
+                return light2;
+            }
+        }
+
+        public ColorLights Light3
+        {
+            get
+            {
+                return light3;
+            }
+        }
 
     }
 }
