@@ -371,7 +371,7 @@ namespace Puzzle07
                         }
                     }
                     */
-                    testDoor.Collision(player);
+
                     
 
                     waterRoom.Update(SingleKeyPress(Keys.E), SingleKeyPress(Keys.Q), gameTime);
@@ -514,7 +514,7 @@ namespace Puzzle07
                     }
 
                     
-                    testDoor2.Collision(player);
+
                     wall1.Update(player);
                     wall2.Update(player);
                     wall3.Update(player);
@@ -694,7 +694,7 @@ namespace Puzzle07
                     }
 
 
-                    testDoor2.Collision(player);
+
                     wall1.Update(player);
                     wall2.Update(player);
                     wall3.Update(player);
@@ -947,7 +947,7 @@ namespace Puzzle07
 
 
 
-                    testDoor2.Collision(player);
+
                     wall1.Update(player);
                     wall2.Update(player);
                     wall3.Update(player);
@@ -1046,7 +1046,7 @@ namespace Puzzle07
                 else if (gameState == GameState.Game)
                 {
                     
-                    testDoor2.Collision(player);
+
                     // wall and floor draw code 
                     spriteBatch.Draw(floorTex, new Rectangle(0, 0, 1280, 1024), Color.White);
                     wall1.Draw(spriteBatch);
