@@ -141,7 +141,7 @@ namespace Puzzle07
             pauseRestart = new Button();
             pauseRestart.Location = new Rectangle(440, 500, 400, 100);
             testSprite = new Puzzle07.Sprite(32, 32, 50, 8, new Vector2(100, 700));
-            waterRoom = new WaterRoom(kbState, player, new Rectangle(50, 600, 128, 128), new Rectangle(100, 100, 128, 128), new Rectangle(700, 100, 64, 64), new Rectangle(800, 100, 64, 64), rngWater.Next(2, 7), rngWater.Next(2, 7), new Rectangle(500, 700, 64, 64));
+            waterRoom = new WaterRoom(kbState, player, new Rectangle(50, 600, 128, 128), new Rectangle(100, 100, 128, 128), new Rectangle(700, 100, 64, 64), new Rectangle(800, 100, 64, 64), 3, 5, new Rectangle(500, 700, 64, 64), 4);
             interact.Add(lightswitch);
             leverRoom = new LeverRoomAustin(kbState, player, new Rectangle(700, 100, 64, 64), new Rectangle(800, 100, 64, 64),drainTex, sinkTex);
             redLight = new RedLightRoom(kbState, player, new Rectangle(700, 100, 64, 64), new Rectangle(300, 700, 64, 64), new Rectangle(500, 500, 64, 64));
@@ -337,7 +337,7 @@ namespace Puzzle07
                     ScreenWrap(player);
                     
 
-                    if (SingleKeyPress(Keys.P))
+                    if (SingleKeyPress(Keys.P)) //Open pause menu
                     {
                         gameState = GameState.InGameMenu;
                     }
@@ -345,32 +345,7 @@ namespace Puzzle07
                     {
                         gameState = GameState.GameOver;
                     }
-
-                    /*bool isColliding = lightswitch.CheckCollision(player);
                     
-                    if (isColliding == true && SingleKeyPress(Keys.E) && lightswitch.OnOff == false) // kept this code here just in case anyone wanted to reuse it - Austin
-                    {
-                        lightswitch.OnOff = true;
-                    }
-                    else if (isColliding == true && SingleKeyPress(Keys.E) && lightswitch.OnOff == true)
-                    {
-                        lightswitch.OnOff = false;
-                    }
-
-                    isColliding = testLever.CheckCollision(player);
-                    if (isColliding == true && SingleKeyPress(Keys.E))
-                    {
-                        testLever.StateChanged();
-                        if (testLever.OnOff == true)
-                        {
-                            testLever.OnOff = false;
-                        }
-                        else
-                        {
-                            testLever.OnOff = true;
-                        }
-                    }
-                    */
                     testDoor.Collision(player);
                     
 
@@ -1036,7 +1011,9 @@ namespace Puzzle07
                     
                     // draw code for water room
                     spriteBatch.DrawString(font, "Current: " + waterRoom.FinalContainer.Amount.ToString(), new Vector2(50, 80), Color.Black);
-                    spriteBatch.DrawString(font, "Max: " + waterRoom.FinalContainer.Max.ToString(), new Vector2(200, 80), Color.Black);
+                    spriteBatch.DrawString(font, "Max: " + waterRoom.GoalAmount, new Vector2(200, 80), Color.Black);
+                    spriteBatch.DrawString(font, "Container 1: " + waterRoom.WaterContainer1.Amount, new Vector2(800, 80), Color.Black);
+                    spriteBatch.DrawString(font, "Container 2: " + waterRoom.WaterContainer2.Amount, new Vector2(1000, 80), Color.Black);
                     
                     waterRoom.Sink.Draw(spriteBatch);
                     waterRoom.WaterContainer1.Draw(spriteBatch);

@@ -27,15 +27,17 @@ namespace Puzzle07
         WaterContainer waterContainer1;
         WaterContainer waterContainer2;
         Interactable drain;
+        int goalAmount;
 
         // constructor
-        public WaterRoom(KeyboardState kState, Player plyer, Rectangle sinkPos, Rectangle finalContPos, Rectangle waterContPos1, Rectangle waterContPos2, int contMax1, int contMax2, Rectangle drainPos): base(kState, plyer)
+        public WaterRoom(KeyboardState kState, Player plyer, Rectangle sinkPos, Rectangle finalContPos, Rectangle waterContPos1, Rectangle waterContPos2, int contMax1, int contMax2, Rectangle drainPos, int goal): base(kState, plyer)
         {
             sink = new Interactable(sinkPos.X, sinkPos.Y, sinkPos.Width, sinkPos.Height);
             drain = new Interactable(drainPos.X, drainPos.Y, drainPos.Width, drainPos.Height);
-            finalContainer = new WaterContainer(contMax1 + contMax2, 0, finalContPos.X, finalContPos.Y, finalContPos.Width, finalContPos.Height);
+            finalContainer = new WaterContainer(goalAmount, 0, finalContPos.X, finalContPos.Y, finalContPos.Width, finalContPos.Height);
             waterContainer1 = new WaterContainer(contMax1, 0, waterContPos1.X, waterContPos1.Y, waterContPos1.Width, waterContPos1.Height);
             waterContainer2 = new WaterContainer(contMax2, 0, waterContPos2.X, waterContPos2.Y, waterContPos2.Width, waterContPos2.Height);
+            goalAmount = goal;
 
             // setting room defaults
             wall1 = new Wall(-10, 0, 20, 1024);
@@ -54,60 +56,91 @@ namespace Puzzle07
 
         public void Update(bool keyPressedE, bool keyPressedQ, GameTime gameTime)
         {
+            
+            bool isColliding1 = WaterContainer1.CheckCollision(Player1);        //Checks for water containers colliding with the player
+            bool isColliding2 = WaterContainer2.CheckCollision(Player1);
 
-
-
-            bool isColliding1 = WaterContainer1.CheckCollision(Player1);
-            if (isColliding1 && keyPressedE && WaterContainer2.OnOff == false)
+            if (isColliding1 && keyPressedE && WaterContainer2.OnOff == false)  //Pick up container 1 if container 2 isn't held
             {
                 WaterContainer1.OnOff = true;
-
             }
-            if (WaterContainer1.CheckCollision(Sink) && keyPressedE)
+
+            if (isColliding2 && keyPressedE && WaterContainer1.OnOff == false)  //Pick up container 2
+            {
+                WaterContainer2.OnOff = true;
+            }
+
+            if (WaterContainer1.CheckCollision(Sink) && keyPressedE && WaterContainer1.OnOff == true)    //Fill container 1
             {
                 Fill();
             }
-            else if (WaterContainer1.CheckCollision(FinalContainer) && keyPressedE)
+
+            if (WaterContainer2.CheckCollision(Sink) && keyPressedE && WaterContainer2.OnOff == true)    //Fill container 2
             {
-                FinalContainerCondition();
+                Fill();
             }
 
-            else if (WaterContainer1.CheckCollision(Drain) && keyPressedE)
+            else if (WaterContainer1.CheckCollision(FinalContainer) && keyPressedE && WaterContainer1.OnOff == true) //Empty Container 1 into Final container
+            {
+                FinalContainerCondition(WaterContainer1);
+            }
+
+            else if (WaterContainer2.CheckCollision(FinalContainer) && keyPressedE && WaterContainer2.OnOff == true) //Pour container 2 into final container
+            {
+                FinalContainerCondition(WaterContainer2);
+            }
+
+            else if (WaterContainer1.CheckCollision(Drain) && keyPressedE && WaterContainer1.OnOff == true)  //Drain container 1
             {
                 DrainCup();
             }
 
-            if (WaterContainer1.OnOff == true && keyPressedQ)
+            else if (WaterContainer2.CheckCollision(Drain) && keyPressedE && WaterContainer2.OnOff == true)  //Drain container 2
+            {
+                DrainCup();
+            }
+
+            if (WaterContainer1.OnOff == true && keyPressedQ && WaterContainer1.CheckCollision(WaterContainer2) == false && WaterContainer1.CheckCollision(FinalContainer) == false &&
+                WaterContainer1.CheckCollision(Sink) == false && WaterContainer1.CheckCollision(Drain) == false)   //Drop container 1
             {
                 WaterContainer1.OnOff = false;
             }
 
-            bool isColliding2 = WaterContainer2.CheckCollision(Player1);
-            if (isColliding2 && keyPressedE && WaterContainer1.OnOff == false)
-            {
-                WaterContainer2.OnOff = true;
-
-            }
-
-            if (WaterContainer2.CheckCollision(Sink) && keyPressedE)
-            {
-                Fill();
-            }
-
-            else if (WaterContainer2.CheckCollision(FinalContainer) && keyPressedE)
-            {
-                FinalContainerCondition();
-            }
-
-            else if (WaterContainer2.CheckCollision(Drain) && keyPressedE)
-            {
-                DrainCup();
-            }
-
-            if (WaterContainer2.OnOff == true && keyPressedQ)
+            if (WaterContainer2.OnOff == true && keyPressedQ && WaterContainer2.CheckCollision(WaterContainer1) == false && WaterContainer2.CheckCollision(FinalContainer) == false &&
+                WaterContainer2.CheckCollision(Sink) == false && WaterContainer2.CheckCollision(Drain) == false)   //Drop container 2
             {
                 WaterContainer2.OnOff = false;
             }
+
+            if(WaterContainer1.OnOff && WaterContainer1.CheckCollision(WaterContainer2) && keyPressedE)        //Pour from 1 to 2
+            {
+                if(WaterContainer2.Amount + WaterContainer1.Amount <= WaterContainer2.Max)
+                {
+                    WaterContainer2.Amount += WaterContainer1.Amount;
+                    WaterContainer1.Amount = 0;
+                }
+                else if(WaterContainer2.Amount + WaterContainer1.Amount > WaterContainer2.Max)
+                {
+                    WaterContainer1.Amount -= (WaterContainer2.Max - WaterContainer2.Amount);
+                    WaterContainer2.Amount = WaterContainer2.Max;
+                }
+            }
+
+            if (WaterContainer2.OnOff && WaterContainer2.CheckCollision(WaterContainer1) && keyPressedE)        //Pour from 2 to 1
+            {
+                if (WaterContainer1.Amount + WaterContainer2.Amount <= WaterContainer1.Max)
+                {
+                    WaterContainer1.Amount += WaterContainer2.Amount;
+                    WaterContainer2.Amount = 0;
+                }
+                else if (WaterContainer1.Amount + WaterContainer2.Amount > WaterContainer1.Max)
+                {
+                    WaterContainer2.Amount -= (WaterContainer1.Max - WaterContainer1.Amount);
+                    WaterContainer1.Amount = WaterContainer1.Max;
+                }
+            }
+
+
         }
 
         // accessors
@@ -117,6 +150,12 @@ namespace Puzzle07
             {
                 return sink;
             }
+        }
+
+        public int GoalAmount
+        {
+            get { return goalAmount; }
+            set { goalAmount = value; }
         }
 
         public Interactable Drain
@@ -151,47 +190,13 @@ namespace Puzzle07
             }
         }
         // method to cover all possible interactions with the final container
-        public void FinalContainerCondition()
+        public void FinalContainerCondition(WaterContainer container)
         {
-
-            if (finalContainer.Max == finalContainer.Amount) // if the tank is full
+            if(container.Amount == goalAmount)
             {
+                FinalContainer.Amount = container.Amount;
+                DrainCup();
                 Complete = true;
-            }
-
-            else if(waterContainer1.Amount == 0 && waterContainer1.OnOff && finalContainer.Amount != 0) // code to take water out of the big tank using container 1
-            {
-                waterContainer1.Amount = waterContainer1.Max;
-                finalContainer.Amount = finalContainer.Amount - waterContainer1.Max;
-            }
-
-            else if(waterContainer2.Amount == 0 && waterContainer2.OnOff && finalContainer.Amount != 0) // code to take water out of the big tank using container 2
-            {
-                waterContainer2.Amount = waterContainer2.Max;
-                finalContainer.Amount = finalContainer.Amount - waterContainer2.Max;
-            }
-
-            
-
-            else if(finalContainer.Max < finalContainer.Amount + waterContainer1.Amount && waterContainer1.OnOff) // code to check if the amount being put in is greater than the big tank max
-            {
-                finalContainer.Amount = finalContainer.Amount - waterContainer1.Amount;
-            }
-
-            else if (finalContainer.Max < finalContainer.Amount + waterContainer2.Amount && waterContainer2.OnOff) // same as the one above but for container 2
-            {
-                finalContainer.Amount = finalContainer.Amount - waterContainer2.Amount;
-            }
-
-            else if(finalContainer.Max >= finalContainer.Amount + waterContainer1.Amount && waterContainer1.OnOff) // code to add water to big tank using water container 1
-            {
-                finalContainer.Amount = finalContainer.Amount + waterContainer1.Amount;
-                waterContainer1.Amount = 0;
-            }
-            else if(finalContainer.Max >= finalContainer.Amount + waterContainer2.Amount && waterContainer2.OnOff) // code to add water to big tank using water container 2
-            {
-                finalContainer.Amount = finalContainer.Amount + waterContainer2.Amount;
-                waterContainer2.Amount = 0;
             }
         }
 
@@ -222,7 +227,6 @@ namespace Puzzle07
                 waterContainer2.Amount = 0;
             }
         }
-
 
     }
 }
