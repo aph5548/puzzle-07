@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using Microsoft.Xna.Framework.Media;
 using System.IO;
 /*
  * Austin Stone
@@ -41,6 +42,10 @@ namespace Puzzle07
         Texture2D spriteSheet;
         Texture2D detectTex;
         Texture2D lever;
+        Texture2D greenLight;
+        Texture2D red;
+        Song song1;
+        Song song2;
         SpriteFont font;
         Player player;
         List<Interactable> interact;
@@ -61,7 +66,8 @@ namespace Puzzle07
         Wall wall3; // bottom wall
         Wall wall4; // wall left of door
         Wall wall5; // wall right of door
-
+        bool song1con = false;
+        bool song2con = false;
         // middle walls in math room
         Wall wall6;
         Wall wall7;
@@ -163,7 +169,11 @@ namespace Puzzle07
             start.Texture = Content.Load<Texture2D>("StartButton");
             lever = Content.Load<Texture2D>("LeverLeft");
             quit.Texture = Content.Load<Texture2D>("ExitButton");
+            greenLight = Content.Load<Texture2D>("GreenLight");
+            red = Content.Load<Texture2D>("RedLight");
             detectTex = Content.Load<Texture2D>("enemySprite");
+            song1 = Content.Load<Song>("menu_song");
+            song2 = Content.Load<Song>("song");
             //spriteSheet = Content.Load<Texture2D>("testSpriteSheet");
             player.Texture = sprite;
             lightswitch.Texture = interSprite1;
@@ -175,6 +185,9 @@ namespace Puzzle07
             leverRoom.Lever4.Texture = lever;
             leverRoom.Lever5.Texture = lever;
             leverRoom.Lever6.Texture = lever;
+            //leverRoom.light1.Texture = red;
+            //leverRoom.light2.Texture = red;
+            //leverRoom.light3.Texture = red;
             wall1.Texture = vertWallTex;
             wall2.Texture = vertWallTex;
             wall3.Texture = wallTex;
@@ -227,7 +240,7 @@ namespace Puzzle07
         {
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
-
+            
             // TODO: Add your update logic here
             
 
@@ -241,6 +254,19 @@ namespace Puzzle07
             {
                 if (gameState == GameState.Menu)
                 {
+                    //start menu song
+                    if(song1con == false)
+                    {
+                        if(song2con == true)
+                        {
+                            MediaPlayer.Stop();
+                            song2con = false;
+                        }
+                        MediaPlayer.Play(song1);
+                        MediaPlayer.IsRepeating = true;
+                        song1con = true;
+
+                    }
 
                     //Check too see if the buttons are clicked or not
                     
@@ -260,7 +286,18 @@ namespace Puzzle07
 
                 else if (gameState == GameState.Game)
                 {
-                    
+                    if (song2con == false)
+                    {
+                        if (song1con == true)
+                        {
+                            MediaPlayer.Stop();
+                            song2con = false;
+                        }
+                        MediaPlayer.Play(song2);
+                        MediaPlayer.IsRepeating = true;
+                        song2con = true;
+
+                    }
                     player.Move(kbState); //Made a move method so that we're not looking at a massive if statement - Michael
                                           //time -= gameTime.ElapsedGameTime.TotalSeconds;
 

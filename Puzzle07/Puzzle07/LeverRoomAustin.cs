@@ -29,7 +29,6 @@ namespace Puzzle07
         ColorLights light1;
         ColorLights light2;
         ColorLights light3;
-        ColorLights light4;
         Door testDoor;
         RoomExit exit;
 
@@ -59,7 +58,7 @@ namespace Puzzle07
             light1 = new ColorLights(400, 400, 32, 32, tex1, tex2);
             light2 = new ColorLights(400, 450, 32, 32, tex1, tex2);
             light3 = new ColorLights(400, 500, 32, 32, tex1, tex2);
-            light4 = new ColorLights(400, 550, 32, 32, tex1, tex2);
+
 
 
         }
