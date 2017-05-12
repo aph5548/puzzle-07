@@ -137,7 +137,7 @@ namespace Puzzle07
             redLight = new RedLightRoom(kbState, player, new Rectangle(700, 100, 64, 64), new Rectangle(300, 700, 64, 64), new Rectangle(500, 500, 64, 64));
             mathRoom = new MathRoom(kbState, player);
             timeSinceLastMove = 0;
-            time = 10;
+            time = 90;
             ReadFile();
 
 
@@ -254,13 +254,14 @@ namespace Puzzle07
             
             if(time <= 0)
             {
-                time = 10;
+                time = 90;
                 ResetGame();
                 gameState = GameState.GameOver;
                 
             }
-            else if(time > 0)
+            else if(time > 0 && gameState != GameState.GameOver && gameState != GameState.Menu && gameState != GameState.InGameMenu)
             {
+
                 time -= (float)gameTime.ElapsedGameTime.TotalSeconds;
             }
             mouse = Mouse.GetState();
